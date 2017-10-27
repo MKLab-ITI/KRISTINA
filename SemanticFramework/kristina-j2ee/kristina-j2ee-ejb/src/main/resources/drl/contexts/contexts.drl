@@ -1,0 +1,98 @@
+package gr.iti.kristina.core.qa.rules
+
+import java.util.Map.Entry;
+//import gr.iti.kristina.core.qa.*;
+//import gr.iti.kristina.core.qa.rules.*;
+//import gr.iti.kristina.core.qa.Triple;
+import gr.iti.kristina.model.*;
+import java.util.HashSet;
+//import gr.iti.kristina.helpers.functions.Print
+import gr.iti.kristina.utils.*;
+import org.jboss.logging.Logger;
+
+global org.jboss.logging.Logger logger
+global gr.iti.kristina.model.ContextBuilder service
+
+
+rule "merge clusters" 
+    salience 120
+when
+    $cl1: ContextCluster($triples1:triples)
+    $t: Triple() from $triples1
+    $cl2: ContextCluster(this != $cl1, $triples2:triples, service.matchList((Triple) $t, (HashSet) $triples2))
+then
+    modify($cl1){
+        addAll($triples2);
+    }
+    retract($cl2);
+    //logger.info("clusters merged ");   
+end
+
+
+rule "update cluster" 
+    salience 110
+when
+    $e: Entry($t: value)
+    $cl: ContextCluster($triples:triples, service.matchList((Triple) $t, (HashSet) $triples))
+then
+    modify($cl){
+        add((Triple) $t);
+    }
+    insert($cl);
+    retract($e);
+    //logger.info("cluster updated with triple -> " + $t);   
+end
+
+rule "initiate cluster" 
+    salience 100
+when
+    $e: Entry($t: value)
+    not ContextCluster($triples:triples, service.matchList((Triple) $t, (HashSet) $triples))
+then
+    ContextCluster cl = new ContextCluster();
+    cl.add((Triple)$t);
+    insert(cl);
+    retract($e);
+    //logger.info("cluster added for triple -> " + $t);   
+end
+
+
+rule "print entries" 
+    salience 0
+when
+    $e: Entry($t: value)
+then
+    logger.info("entry found -> " + $e);   
+end
+
+rule "print clusters" 
+    salience 0
+when
+    $cl: ContextCluster($triples:triples)
+then
+    //logger.debug("cluster found -> " + $triples);   
+    service.logContextCluster((ContextCluster) $cl);
+end
+
+
+
+//rule "find dependencies among contexts" 
+//    salience 100
+//when
+//    $m1: Entry($k1:key, $t1: value)
+//    $m2: Entry($k2:key && $k1 != $k2, $t2:value && service.match((Triple) $t1, (Triple) $t2))
+//    not Dependency((key1 == $k1 && key2 == $k2) || (key1 == $k2 && key2 == $k1) )
+//then
+//    Dependency d = new Dependency((String) $k1, (String) $k2);
+//    insert(d);
+//    service.logDependency((Dependency) d);
+//    logger.debug($k1 + " " + $k2);   
+//end
+//
+//rule "Collect dependencies"
+//when
+//    $d1: Dependency($k11:key1, $k12:key2)
+//  $d2: Dependency(this != $d1, $k21:key1, $k22:key2)
+//then
+//
+//end

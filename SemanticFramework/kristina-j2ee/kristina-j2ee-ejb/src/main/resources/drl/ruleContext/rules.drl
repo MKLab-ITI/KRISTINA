@@ -1,0 +1,1932 @@
+package gr.iti.kristina.core.qa.rules
+
+import java.util.Map.Entry;
+import gr.iti.kristina.model.*;
+import java.util.*;
+import java.util.HashSet;
+import gr.iti.kristina.utils.*;
+import org.jboss.logging.Logger;
+import gr.iti.kristina.parsers.LAParser.LAParserResult;
+import gr.iti.kristina.model.Namespaces;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.google.common.collect.LinkedHashMultimap;
+import gr.iti.kristina.model.rules.*;
+import com.hp.hpl.jena.ontology.OntClass;
+import java.util.Collections;
+
+global org.jboss.logging.Logger logger
+global gr.iti.kristina.services.RulesServiceBean service
+
+declare LAParserResult
+    @role( event )
+//    @timestamp (start)
+ //   @expires( 11h35m )
+//    @duration (duration)
+end 
+
+
+//HealthCareContext -> fixed
+//EmergencyContext -> fixed
+
+
+/*
+declare Topic
+	values : ArrayList
+	requestType: Resource
+	generic: boolean
+	answered: boolean
+end
+*/
+/*
+declare EVENT
+	value: String
+	payload: Object
+end
+*/
+
+
+/***********************************************
+	For each LA Result, try to find the topic
+************************************************/
+rule "Parse LA result and find insert the topic" 
+when
+	$la: LAParserResult()
+    
+then 
+    logger.info("LAParserResult...");  
+    ArrayList topics = service.findTopic($la);
+    Topic newTopic = new Topic();
+    newTopic.setAnswered(false);
+    newTopic.setValues((ArrayList) topics);
+    newTopic.setRequestType($la.speechActType);
+    newTopic.setUserText($la.userText);
+    newTopic.setLanguage($la.language);
+    insert(newTopic);	   
+    logger.info("TOPIC DETECTED: " + topics + ", " + newTopic.getRequestType());  
+end
+
+/***********************************************
+				EVENT DISPATCHERS
+************************************************/
+rule "NEWSPAPER_REQUEST_EVENT_DISPATCHER" 
+when
+	$la: LAParserResult(speechActType.toString().equals(Namespaces.LA_DIALOGUE + "RequestNewspaper"))
+then 
+    EVENT e = new EVENT();
+    e.setValue("NEWSPAPER_REQUEST_EVENT");
+    e.setPayload($la.userText);
+    insert(e);
+    logger.info("NEWSPAPER_REQUEST_EVENT: EMMITTED");
+end
+
+rule "WEATHER_REQUEST_EVENT_DISPATCHER" 
+when
+	$la: LAParserResult(speechActType.toString().equals(Namespaces.LA_DIALOGUE + "RequestWeather"))
+then 
+    EVENT e = new EVENT();
+    e.setValue("WEATHER_REQUEST_EVENT");
+    insert(e);
+    logger.info("WEATHER_REQUEST_EVENT: EMMITTED");
+end
+
+rule "LocalEvent_REQUEST_EVENT_DISPATCHER" 
+when
+	$la: LAParserResult(speechActType.toString().equals(Namespaces.LA_DIALOGUE + "RequestLocalEvent"))
+then 
+    EVENT e = new EVENT();
+    e.setValue("LOCAL_REQUEST_EVENT");
+    e.setPayload($la.userText);
+    insert(e);
+    logger.info("LOCAL_REQUEST_EVENT: EMMITTED");
+end
+
+rule "Recipe_REQUEST_EVENT_DISPATCHER" 
+when
+	$la: LAParserResult(speechActType.toString().equals(Namespaces.LA_DIALOGUE + "RequestRecipe"))
+then 
+    EVENT e = new EVENT();
+    e.setValue("ShowRecipe");
+    insert(e);
+    logger.info("Recipe: EMMITTED"); 
+end
+
+rule "SocialMedia_REQUEST_EVENT_DISPATCHER" 
+when
+	$la: LAParserResult(speechActType.toString().equals(Namespaces.LA_DIALOGUE + "RequestSocialMedia"))
+then 
+    EVENT e = new EVENT();
+    e.setValue("SocialMedia");
+    insert(e);
+    logger.info("SocialMedia: EMMITTED");   
+end
+
+rule "RequestInfoSleep_REQUEST_EVENT_DISPATCHER" 
+when
+	$la: LAParserResult(speechActType.toString().equals(Namespaces.LA_DIALOGUE + "RequestInfoSleep"))
+then 
+    EVENT e = new EVENT();
+    e.setValue("RequestInfoSleep");
+    insert(e);
+    logger.info("RequestInfoSleep: EMMITTED");   
+end
+
+rule "RequestInfoSleepHygiene_REQUEST_EVENT_DISPATCHER" 
+when
+	$la: LAParserResult(speechActType.toString().equals(Namespaces.LA_DIALOGUE + "RequestInfoSleepHygiene"))
+then 
+    EVENT e = new EVENT();
+    e.setValue("RequestInfoSleepHygiene");
+    insert(e);
+    logger.info("RequestInfoSleepHygiene: EMMITTED");   
+end
+
+rule "RequestInfoDementia_REQUEST_EVENT_DISPATCHER" 
+when
+	$la: LAParserResult(speechActType.toString().equals(Namespaces.LA_DIALOGUE + "RequestInfoDementia"))
+then 
+    EVENT e = new EVENT();
+    e.setValue("RequestInfoDementia");
+    insert(e);
+    logger.info("RequestInfoDementia: EMMITTED");   
+end
+
+rule "RequestInfoDiabetes_REQUEST_EVENT_DISPATCHER" 
+when
+	$la: LAParserResult(speechActType.toString().equals(Namespaces.LA_DIALOGUE + "RequestInfoDiabetes"))
+then 
+    EVENT e = new EVENT();
+    e.setValue("RequestInfoDiabetes");
+    insert(e);
+    logger.info("RequestInfoDiabetes: EMMITTED");   
+end
+
+rule "RequestClosestParks_REQUEST_EVENT_DISPATCHER" 
+when
+	$la: LAParserResult(speechActType.toString().equals(Namespaces.LA_DIALOGUE + "RequestClosestParks"))
+then 
+    EVENT e = new EVENT();
+    e.setValue("RequestClosestParks");
+    insert(e);
+    logger.info("RequestClosestParks: EMMITTED");   
+end
+
+rule "RequestClosestHealthCenter_REQUEST_EVENT_DISPATCHER" 
+when
+	$la: LAParserResult(speechActType.toString().equals(Namespaces.LA_DIALOGUE + "RequestClosestHealthCenter"))
+then 
+    EVENT e = new EVENT();
+    e.setValue("RequestClosestHealthCenter");
+    insert(e);
+    logger.info("RequestClosestHealthCenter: EMMITTED");   
+end
+
+rule "RequestActivitiesBaby_REQUEST_EVENT_DISPATCHER" 
+when
+	$la: LAParserResult(speechActType.toString().equals(Namespaces.LA_DIALOGUE + "RequestActivitiesBaby"))
+then 
+    EVENT e = new EVENT();
+    e.setValue("RequestActivitiesBaby");
+    insert(e);
+    logger.info("RequestActivitiesBaby: EMMITTED");   
+end
+
+rule "RequestInfoProtectionBaby_REQUEST_EVENT_DISPATCHER" 
+when
+	$la: LAParserResult(speechActType.toString().equals(Namespaces.LA_DIALOGUE + "RequestInfoProtectionBaby"))
+then 
+    EVENT e = new EVENT();
+    e.setValue("RequestInfoProtectionBaby");
+    insert(e);
+    logger.info("RequestInfoProtectionBaby: EMMITTED");   
+end
+
+rule "NO_TOPIC_EVENT_DISPATCHER" 
+when
+	$topic : Topic(values.isEmpty() && answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("NO_TOPIC_EVENT");
+    insert(e);
+    logger.info("NO_TOPIC_EVENT: EMMITTED");       
+end
+
+rule "MORE_THAN_ONE_TOPIC_EVENT_DISPATCHER" 
+when
+	$topic : Topic(values.size() > 1 && answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("MORE_THAN_ONE_TOPIC_EVENT");
+    insert(e);
+    logger.info("MORE_THAN_ONE_TOPIC_EVENT: EMMITTED");       
+end
+
+
+rule "INJECT GENERIC"
+when
+	$topic : Topic(values.size() == 1 && answered == false)
+then
+	boolean g = service.isGenericTopic((Resource) $topic.getValues().get(0));
+	if($topic.isGeneric() != g) {
+		modify($topic) {
+			setGeneric(g);
+		}	
+		logger.info("INJECT GENERIC: " + $topic.isGeneric()); 
+	}
+end
+
+/*
+rule "GENERIC_TOPIC_DISPATCHER" 
+when
+	$topic : Topic(generic == true && answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("GENERIC_TOPIC_EVENT");
+    e.setPayload($topic.getValues().get(0));
+    insert(e);
+    logger.info("GENERIC_TOPIC_EVENT: EMMITTED");  
+end
+*/
+
+/*
+rule "IR_DISPATCHER" 
+when
+	$topic : Topic(generic == true && answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("GENERIC_TOPIC_EVENT");
+    e.setPayload($topic.getValues().get(0));
+    insert(e);
+    logger.info("GENERIC_TOPIC_EVENT: EMMITTED");  
+end
+*/
+
+//...
+
+
+// EatingHabit Hierarchy
+rule "EatingHabit_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& values.get(0).toString().equals(Namespaces.KB_CONTEXT + "EatingHabit") 
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("EatingHabit");
+    insert(e);
+    logger.info("EatingHabit_EVENT: EMMITTED");   
+end
+rule "DietRestrictions_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& values.get(0).toString().equals(Namespaces.KB_CONTEXT + "DietRestrictions")  
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("DietRestrictions");
+    e.setPayload("{\"spokenText\": true}");
+    insert(e);
+    logger.info("DietRestrictions_EVENT: EMMITTED " + e.getPayload());   
+end
+rule "EatingAllergies_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& values.get(0).toString().equals(Namespaces.KB_CONTEXT + "EatingAllergies")  
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("EatingAllergies");
+    insert(e);
+    logger.info("EatingAllergies_EVENT: EMMITTED");   
+    
+end
+rule "FavouriteFood_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& values.get(0).toString().equals(Namespaces.KB_CONTEXT + "FavouriteFood")  
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("FavouriteFood");
+    insert(e);
+    logger.info("FavouriteFood_EVENT: EMMITTED");   
+    
+end
+rule "EatsAnimalProduct_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& values.get(0).toString().equals(Namespaces.KB_CONTEXT + "EatsAnimalProduct")  
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("EatsAnimalProduct");
+    insert(e);
+    logger.info("EatsAnimalProduct: EMMITTED");   
+    
+end
+
+rule "DrinkAlcohol_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& values.get(0).toString().equals(Namespaces.KB_CONTEXT + "DrinkAlcohol")  
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("DrinkAlcohol");
+    insert(e);
+    logger.info("DrinkAlcohol: EMMITTED");   
+    
+end
+
+/* SOCIAL MEDIA */
+rule "SocialMedia_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& (values.get(0).toString().equals(Namespaces.KB_CONTEXT + "SocialMedia")
+				|| values.get(0).toString().equals(Namespaces.KB_CONTEXT + "DiscussedTopics"))
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("SocialMedia");
+    insert(e);
+    logger.info("SocialMedia: EMMITTED");   
+    
+end
+
+
+/* LOCAL EVENTS  */
+rule "LocalEvent_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& (values.get(0).toString().equals(Namespaces.KB_CONTEXT + "LocalEvent"))
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("LOCAL_REQUEST_EVENT");
+    insert(e);
+    logger.info("LOCAL_REQUEST_EVENT: EMMITTED");   
+end
+
+rule "LocalEventBaby_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& (values.get(0).toString().equals(Namespaces.KB_CONTEXT + "LocalEventBaby"))
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("RequestActivitiesBaby");
+    insert(e);
+    logger.info("LocalEventBaby: EMMITTED");   
+end
+
+/* RECIPES */
+rule "Recipes_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		//&& (values.get(0).toString().equals(Namespaces.KB_CONTEXT + "ShowRecipe") ||
+		 //values.get(0).toString().equals(Namespaces.KB_CONTEXT + "ShowRecipeAbout"))
+		&& service.isSubClassOf((String) Namespaces.KB_CONTEXT + "ShowRecipe", values.get(0))
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("ShowRecipe");
+    insert(e);
+    logger.info("Recipe: EMMITTED");   
+    
+end
+
+/* VaccineContext
+rule "VaccineContext_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& service.isSubClassOf((String) Namespaces.KB_CONTEXT + "VaccineContext", values.get(0)) 
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("VaccineContext");
+    insert(e);
+    logger.info("VaccineContext: EMMITTED");   
+    
+end
+*/
+
+
+rule "VaccineCalendarContext_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& service.isSubClassOf((String) Namespaces.KB_CONTEXT + "VaccineCalendarContext", values.get(0)) 
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("VaccineCalendarContext");
+    insert(e);
+    logger.info("VaccineCalendarContext: EMMITTED");   
+    
+end
+
+
+rule "NearestHealthcareCenter_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& service.isSubClassOf((String) Namespaces.KB_CONTEXT + "NearestHealthcareCenter", values.get(0)) 
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("RequestClosestHealthCenter");
+    insert(e);
+    logger.info("RequestClosestHealthCenter: EMMITTED");   
+    
+end
+
+rule "NearestPark_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& service.isSubClassOf((String) Namespaces.KB_CONTEXT + "NearestPark", values.get(0)) 
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("RequestClosestParks");
+    insert(e);
+    logger.info("NearestPark: EMMITTED");   
+    
+end
+
+/*
+rule "BreastMilkBenefits_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& service.isSubClassOf((String) Namespaces.KB_CONTEXT + "BreastMilkBenefits", values.get(0)) 
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("BreastMilkBenefits");
+    insert(e);
+    logger.info("BreastMilkBenefits: EMMITTED");     
+end
+*/
+/*
+rule "BabyContext_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& service.isSubClassOf((String) Namespaces.KB_CONTEXT + "BabyContext", values.get(0)) 
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("BabyContext");
+    insert(e);
+    logger.info("BabyContext: EMMITTED");   
+    
+end
+*/
+
+
+rule "ActivityDuration_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& values.get(0).toString().equals(Namespaces.KB_CONTEXT + "ActivityDurationContext")   
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("ActivityDurationContext");
+    e.setPayload("prototype2/sleepDuration.owl $$ prototype2/wakeUpTime.owl");
+    insert(e);
+    logger.info("ActivityDurationContext: EMMITTED");     
+end
+
+rule "ToiletFrequency_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& values.get(0).toString().equals(Namespaces.KB_CONTEXT + "ToiletFrequencyContext")   
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("ToiletFrequencyContext");
+    e.setPayload("prototype2/toiletFrequency.owl $$ prototype2/assistanceToilet.owl ");
+    insert(e);
+    logger.info("ToiletFrequencyContext: EMMITTED");     
+end
+
+rule "WakeupFrequency_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& values.get(0).toString().equals(Namespaces.KB_CONTEXT + "WakeUpFrequencyContext")   
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("WakeUpFrequencyContext");
+    e.setPayload("prototype2/wakeUpFrequency.owl $$ prototype2/wakeUpTime.ttl ");
+    insert(e);
+    logger.info("WakeUpFrequencyContext: EMMITTED");     
+end
+
+rule "SleepTimeContext_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& values.get(0).toString().equals(Namespaces.KB_CONTEXT + "SleepTimeContext")   
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("SleepTimeContext");
+    e.setPayload("prototype2/sleepTime.owl $$ prototype2/wakeUpTime.owl ");
+    insert(e);
+    logger.info("SleepTimeContext: EMMITTED");     
+end
+
+rule "WakeupTime_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1  
+		&& values.get(0).toString().equals(Namespaces.KB_CONTEXT + "WakeUpContext")   
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("WakeUpContext");
+    e.setPayload("prototype2/wakeUpTime.owl $$ prototype2/sleepDuration.owl ");
+    insert(e);
+    logger.info("WakeUpContext: EMMITTED");     
+end
+
+rule "NeedsAssistance_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& values.get(0).toString().equals(Namespaces.KB_CONTEXT + "NeedsAssistanceContext")   
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("NeedsAssistance");
+    //e.setPayload("prototype2/assistanceToilet.owl $$ prototype2/toiletFrequency.owl");
+    insert(e);
+    logger.info("NeedsAssistance: EMMITTED");     
+end
+
+
+rule "NeedsAssistanceForToilet_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& values.get(0).toString().equals(Namespaces.KB_CONTEXT + "NeedsAssistanceForToilet")   
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("NeedsAssistanceForToilet");
+    e.setPayload("prototype2/assistanceToilet.owl $$ prototype2/toiletFrequency.owl");
+    insert(e);
+    logger.info("NeedsAssistanceForToilet: EMMITTED");     
+end
+
+rule "ActivityBeforeContext_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		//&& values.get(0).toString().equals(Namespaces.KB_CONTEXT + "ActivityBeforeContext")
+		&& service.isSubClassOf((String) Namespaces.KB_CONTEXT + "ActivityBeforeContext", values.get(0))   
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("ActivityBeforeContext");
+    e.setPayload("prototype2/beforeSleepWatchTV.owl,prototype2/beforeSleepDrinkMilk.owl,prototype2/beforeSleepHotWaterBottle.owl $$ prototype2/sleepTime.owl");
+    insert(e);
+    logger.info("ActivityBeforeContext: EMMITTED");     
+end
+
+/*
+rule "LikesToDoBeforeSleepContext_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& values.get(0).toString().equals(Namespaces.KB_CONTEXT + "LikesToDoBeforeSleepContext")   
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("IndividualContext");
+    e.setPayload("prototype2/beforeSleepWatchTV.owl,prototype2/beforeSleepDrinkMilk.owl,prototype2/beforeSleepHotWaterBottle.owl $$ prototype2/sleepTime.owl");
+    insert(e);
+    logger.info("LikesToDoBeforeSleepContext: EMMITTED");     
+end
+
+rule "NeedsBeforeAnActivityContext_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& values.get(0).toString().equals(Namespaces.KB_CONTEXT + "NeedsBeforeAnActivityContext")   
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("IndividualContext");
+    e.setPayload("prototype2/beforeSleepWatchTV.owl,prototype2/beforeSleepDrinkMilk.owl,prototype2/beforeSleepHotWaterBottle.owl $$ prototype2/sleepTime.owl");
+    insert(e);
+    logger.info("NeedsBeforeAnActivityContext: EMMITTED");     
+end
+*/
+rule "LikesToDoAfterAnActivityContext_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		//&& values.get(0).toString().equals(Namespaces.KB_CONTEXT + "LikesToDoAfterAnActivityContext")
+		&& service.isSubClassOf((String) Namespaces.KB_CONTEXT + "ActivityAfterContext", values.get(0))     
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("LikesToDoAfterAnActivityContext");
+    e.setPayload("prototype2/afterTVLikePlayBoardGames.owl,prototype2/afterTVHairCombed.owl $$ prototype2/sleepTime.owl");
+    insert(e);
+    logger.info("LikesToDoAfterAnActivityContext: EMMITTED");     
+end
+
+
+rule "Problem_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& values.get(0).toString().equals(Namespaces.KB_CONTEXT + "Problem")   
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("Problem");
+    insert(e);
+    logger.info("Problem: EMMITTED");     
+end 
+
+rule "SleepProblem_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& (values.get(0).toString().equals(Namespaces.KB_CONTEXT + "SleepProblem") 
+			|| values.get(0).toString().equals(Namespaces.KB_CONTEXT + "NightProblem"))   
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("SleepProblem");
+    insert(e);
+    logger.info("SleepProblem: EMMITTED");     
+end 
+
+rule "SleepHelp_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& values.get(0).toString().equals(Namespaces.KB_CONTEXT + "SleepHelp")
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("SleepHelp");
+    insert(e);
+    logger.info("SleepHelp: EMMITTED");     
+end 
+
+rule "DiseaseContext_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& values.get(0).toString().equals(Namespaces.KB_CONTEXT + "DiseaseContext")
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("DiseaseContext");
+    insert(e);
+    logger.info("DiseaseContext: EMMITTED");     
+end 
+
+rule "MemoryProblem_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& values.get(0).toString().equals(Namespaces.KB_CONTEXT + "MemoryProblem")
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("MemoryProblem");
+    insert(e);
+    logger.info("MemoryProblem: EMMITTED");     
+end 
+
+// BOARD GAME!!!!!?????
+rule "FavouriteBoardGame_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& values.get(0).toString().equals(Namespaces.KB_CONTEXT + "FavouriteBoardGame")   
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("FavouriteBoardGame");
+    e.setPayload("prototype2/likePlayLudo.owl $$ prototype2/sleepTime.owl");
+    insert(e);
+    logger.info("FavouriteBoardGame: EMMITTED");     
+end
+
+
+rule "Weather_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& values.get(0).toString().equals(Namespaces.KB_CONTEXT + "WeatherContext")   
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("WEATHER_REQUEST_EVENT");
+    insert(e);
+    logger.info("WEATHER_REQUEST_EVENT: MANUALLY EMMITTED");
+end
+
+rule "Newspaper_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		//&& values.get(0).toString().equals(Namespaces.KB_CONTEXT + "NewspaperContext")
+		&& service.isSubClassOf((String) Namespaces.KB_CONTEXT + "NewspaperContext", values.get(0))     
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("NEWSPAPER_REQUEST_EVENT");
+    e.setPayload($topic.getUserText());
+    insert(e);
+    logger.info("NEWSPAPER_REQUEST_EVENT: EMMITTED");
+end
+
+rule "AdditionalQueryBreastfeeding_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& values.get(0).toString().equals(Namespaces.KB_CONTEXT + "AdditionalQueryBreastfeeding")   
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("AdditionalQueryBreastfeeding");
+    e.setPayload($topic.getUserText());
+    insert(e);
+    logger.info("AdditionalQueryBreastfeeding_REQUEST_EVENT: EMMITTED");
+end
+
+rule "AdditionalQueryBreastfeedingAssociation_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& values.get(0).toString().equals(Namespaces.KB_CONTEXT + "AdditionalQueryBreastfeedingAssociation")   
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("AdditionalQueryBreastfeedingAssociation");
+    e.setPayload($topic.getUserText());
+    insert(e);
+    logger.info("AdditionalQueryBreastfeedingAssociation: EMMITTED");
+end
+
+rule "AdditionalBabyMeasurement_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& (values.get(0).toString().equals(Namespaces.KB_CONTEXT + "AdditionalBabyMeasurement") || values.get(0).toString().equals(Namespaces.KB_CONTEXT + "AdditionalPhysicalDevelopment"))   
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("AdditionalBabyMeasurement");
+    e.setPayload($topic.getUserText());
+    insert(e);
+    logger.info("AdditionalBabyMeasurement_REQUEST_EVENT: EMMITTED");
+end
+
+rule "BabyContextCheckUpRecommended_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& (values.get(0).toString().equals(Namespaces.KB_CONTEXT + "BabyContextCheckUpRecommended")
+			|| values.get(0).toString().equals(Namespaces.KB_CONTEXT + "BabyContextCheckUp"))  
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("BabyContextCheckUpRecommended");
+    e.setPayload($topic.getUserText());
+    insert(e);
+    logger.info("BabyContextCheckUpRecommended_REQUEST_EVENT: EMMITTED");
+end
+
+rule "SocialMediaVaccination_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& (values.get(0).toString().equals(Namespaces.KB_CONTEXT + "SocialMediaVaccination"))   
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("SocialMediaVaccination");
+    e.setPayload($topic.getUserText());
+    insert(e);
+    logger.info("SocialMediaVaccination: EMMITTED");
+end
+
+rule "EmergencyContext_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		//&& (values.get(0).toString().equals(Namespaces.KB_CONTEXT + "EmergencyContext")) 
+		&& service.isSubClassOf((String) Namespaces.KB_CONTEXT + "EmergencyContext", values.get(0))  
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("EmergencyContext");
+    e.setPayload($topic.getUserText());
+    insert(e);
+    logger.info("EmergencyContext: EMMITTED");
+end
+
+rule "EmergencyContact_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		//&& (values.get(0).toString().equals(Namespaces.KB_CONTEXT + "EmergencyContact"))   
+		&& service.isSubClassOf((String) Namespaces.KB_CONTEXT + "EmergencyContact", values.get(0))  
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("EmergencyContact");
+    e.setPayload($topic.getUserText());
+    insert(e);
+    logger.info("EmergencyContact: EMMITTED");
+end
+
+rule "AdditionalVaccineContext_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& (values.get(0).toString().equals(Namespaces.KB_CONTEXT + "AdditionalVaccineContext"))   
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("AdditionalVaccineContext");
+    e.setPayload($topic.getUserText());
+    insert(e);
+    logger.info("AdditionalVaccineContext: EMMITTED");
+end
+
+rule "AdditionalBabyContextCheckUp_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& values.get(0).toString().equals(Namespaces.KB_CONTEXT + "AdditionalBabyContextCheckUp")   
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("AdditionalBabyContextCheckUp");
+    e.setPayload($topic.getUserText());
+    insert(e);
+    logger.info("AdditionalBabyContextCheckUp: EMMITTED");
+end
+
+rule "AdditionalBackPainContext_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& (values.get(0).toString().equals(Namespaces.KB_CONTEXT + "AdditionalBackPainContext"))   
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("AdditionalBackPainContext");
+    e.setPayload($topic.getUserText());
+    insert(e);
+    logger.info("AdditionalBackPainContext: EMMITTED");
+end
+
+rule "AdditionalDementiaDefinitionContext_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& (values.get(0).toString().equals(Namespaces.KB_CONTEXT + "AdditionalDementiaDefinitionContext"))   
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("AdditionalDementiaDefinitionContext");
+    e.setPayload($topic.getUserText());
+    insert(e);
+    logger.info("AdditionalDementiaDefinitionContext: EMMITTED");
+end
+rule "AdditionalDiabetesDefinitionContext_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& (values.get(0).toString().equals(Namespaces.KB_CONTEXT + "AdditionalDiabetesDefinitionContext"))   
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("AdditionalDiabetesDefinitionContext");
+    e.setPayload($topic.getUserText());
+    insert(e);
+    logger.info("AdditionalDiabetesDefinitionContext: EMMITTED");
+end
+
+rule "AdditionalHealthAssistanceMigrantsContext_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& (values.get(0).toString().equals(Namespaces.KB_CONTEXT + "AdditionalHealthAssistanceMigrantsContext"))   
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("AdditionalHealthAssistanceMigrantsContext");
+    e.setPayload($topic.getUserText());
+    insert(e);
+    logger.info("AdditionalHealthAssistanceMigrantsContext: EMMITTED");
+end
+
+rule "SocialSecurityNumberContext_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& (values.get(0).toString().equals(Namespaces.KB_CONTEXT + "SocialSecurityNumberContext"))   
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("SocialSecurityNumberContext");
+    e.setPayload($topic.getUserText());
+    insert(e);
+    logger.info("SocialSecurityNumberContext: EMMITTED");
+end
+
+
+
+
+rule "BackPainHurtContext_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& (values.get(0).toString().equals(Namespaces.KB_CONTEXT + "BackPainHurtContext"))   
+		&& answered == false)
+then 
+    service.generateProactiveResponse("Tell your doctor if the pain lasts longer than 6 weeks.");
+    logger.info("BackPainHurtContext: EMMITTED");
+end
+
+rule "AppointmentPediatricianContext_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& (values.get(0).toString().equals(Namespaces.KB_CONTEXT + "AppointmentPediatricianContext"))   
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("AppointmentPediatricianContext");
+    e.setPayload($topic.getUserText());
+    insert(e);
+    logger.info("AppointmentPediatricianContext: EMMITTED");
+end
+
+rule "HealthCardContext_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& (values.get(0).toString().equals(Namespaces.KB_CONTEXT + "HealthCardContext"))   
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("HealthCardContext");
+    e.setPayload($topic.getUserText());
+    insert(e);
+    logger.info("HealthCardContext: EMMITTED");
+end
+
+rule "Gain_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& (values.get(0).toString().equals(Namespaces.KB_CONTEXT + "Gain"))   
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("Gain");
+    e.setPayload($topic.getUserText());
+    insert(e);
+    logger.info("Gain: EMMITTED");
+end
+
+rule "GenericContext_EVENT_DISPATHCER" 
+	salience -1
+when 
+	$topic : Topic(values.size() == 1 
+		&& service.isSubClassOf((String) Namespaces.KB_CONTEXT + "GenericContext", values.get(0))  
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("GenericContext");
+    insert(e);
+    logger.info("GenericContext: EMMITTED");     
+end
+
+
+
+/*
+rule "HELP_TO_SLEEP_EVENT_DISPATHCER" 
+when 
+	$topic : Topic(values.size() == 1 
+		&& service.isSubClassOf((String) Namespaces.KB_CONTEXT + "SleepHelp", values.get(0)) 
+		&& answered == false)
+then 
+    EVENT e = new EVENT();
+    e.setValue("SleepHelp_EVENT");
+    insert(e);
+    logger.info("SleepHelp_EVENT: EMMITTED");   
+    
+end
+*/
+/*************************************************
+	HANDLE EVENTS
+**************************************************/
+/*rule "HANDLE NO_TOPIC_EVENT"
+	salience 999999999
+when
+	$e : EVENT(value == "NO_TOPIC_EVENT")
+	$topic : Topic(values.isEmpty() && answered == false)
+then
+	logger.info("NO_TOPIC_EVENT: CAUGHT");  
+	service.generateUnknownResponse(); 
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end
+*/
+rule "HANDLE MORE_THAN_ONE_TOPIC_EVENT"
+	salience 999999999
+when
+	$e : EVENT(value == "MORE_THAN_ONE_TOPIC_EVENT")
+	$topic : Topic(values.size() > 1 && answered == false)
+then
+	logger.info("MORE_THAN_ONE_TOPIC_EVENT: CAUGHT");
+	ArrayList t = service.handleMultipleTopics($topic); 
+	retract($e);
+	modify($topic){
+		//setAnswered(true),
+		setValues(t);
+	} 
+end
+
+rule "HANDLE NEWSPAPER_REQUEST_EVENT"
+	salience 999999999
+when
+	$e : EVENT(value == "NEWSPAPER_REQUEST_EVENT")
+	$topic : Topic(answered == false)
+then
+	logger.info("NEWSPAPER_REQUEST_EVENT: CAUGHT"); 
+	String text = service.callNewspaperService((String) $e.getPayload(), $topic);
+	logger.info("service result:" + text);
+	service.generateNewspaperResponse(text); 
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	}
+end
+
+rule "HANDLE WEATHER_REQUEST_EVENT"
+	salience 999999999
+when
+	$e : EVENT(value == "WEATHER_REQUEST_EVENT")
+	$topic : Topic(answered == false)
+then
+	logger.info("WEATHER_REQUEST_EVENT: CAUGHT"); 
+	LinkedHashMultimap<String, String> weatherData = service.callWeatherService();
+	logger.info("service result:" + weatherData);
+	service.generateWeatherResponse(weatherData);
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	}
+end
+
+rule "HANDLE LOCAL_REQUEST_EVENT"
+	salience 999999999
+when
+	$e : EVENT(value == "LOCAL_REQUEST_EVENT")
+	$topic : Topic(answered == false)
+then
+	logger.info("LocalEvent: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.handleLocalEventResponse($topic); 
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end
+
+rule "HANDLE RequestInfoSleep_EVENT"
+	salience 999999999
+when
+	$e : EVENT(value == "RequestInfoSleep")
+	$topic : Topic(answered == false) 
+then
+	logger.info("RequestInfoSleep: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.callIR($topic, "RequestInfoSleep"); 
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end
+
+rule "HANDLE RequestInfoSleepHygiene_EVENT"
+	salience 999999999
+when
+	$e : EVENT(value == "RequestInfoSleepHygiene")
+	$topic : Topic(answered == false) 
+then
+	logger.info("RequestInfoSleepHygiene: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.callIR($topic, "RequestInfoSleepHygiene"); 
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end
+
+rule "HANDLE RequestInfoDementia_EVENT"
+	salience 999999999
+when
+	$e : EVENT(value == "RequestInfoDementia")
+	$topic : Topic(answered == false) 
+then
+	logger.info("RequestInfoDementia: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.callIR($topic, "RequestInfoDementia"); 
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end
+
+rule "HANDLE RequestInfoDiabetes_EVENT"
+	salience 999999999
+when
+	$e : EVENT(value == "RequestInfoDiabetes")
+	$topic : Topic(answered == false) 
+then
+	logger.info("RequestInfoDiabetes: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.callIR($topic, "RequestInfoDiabetes"); 
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end
+
+rule "HANDLE RequestActivitiesBaby_EVENT"
+	salience 999999999
+when
+	$e : EVENT(value == "RequestActivitiesBaby")
+	$topic : Topic(answered == false) 
+then
+	logger.info("RequestActivitiesBaby: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.handleBabyEventResponse($topic); 
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end
+
+
+rule "HANDLE RequestInfoProtectionBaby_EVENT"
+	salience 999999999
+when
+	$e : EVENT(value == "RequestInfoProtectionBaby")
+	$topic : Topic(answered == false) 
+then
+	logger.info("RequestInfoProtectionBaby: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.callIR($topic, "RequestInfoProtectionBaby"); 
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end
+
+rule "HANDLE Gain_EVENT"
+	salience 999999999
+when
+	$e : EVENT(value == "Gain")
+	$topic : Topic(answered == false) 
+then
+	logger.info("Gain: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.handleGainResponse($topic); 
+	retract($e);
+	modify($topic){
+		setAnswered(true);
+	} 
+end
+
+/*
+rule "HANDLE GENERIC_TOPIC_EVENT"
+	salience 999999999
+when
+	$e : EVENT(value == "GENERIC_TOPIC_EVENT")
+	$topic : Topic(answered == false)
+then
+	logger.info("GENERIC_TOPIC_EVENT: CAUGHT" + "[" + $e.getPayload() + "]");
+	logger.info("TODO: handle this cas2");  
+	boolean contin = service.handleGenericTopicResponse((Resource) $e.getPayload()); 
+	retract($e); 
+	if(!contin) {
+		modify($topic){
+			setAnswered(true);
+		}
+	} 
+end 
+*/
+
+
+// EatingHabit Hierarchy
+rule "HANDLE EatingHabit -> generic"
+	salience 999999999
+when
+	$e : EVENT(value == "EatingHabit")
+	$topic : Topic(answered == false)
+then
+	logger.info("EatingHabit: CAUGHT" + "[" + $e.getPayload() + "]");
+	boolean contin = service.handleEatingHabitResponse($topic); 
+	retract($e); 
+	if(!contin) {
+		modify($topic){
+			setAnswered(true);
+		}
+	} 
+end 
+rule "HANDLE DietRestrictions"
+	salience 999999999
+when
+	$e : EVENT(value == "DietRestrictions")
+	$topic : Topic(answered == false)
+then
+	logger.info("DietRestrictions: CAUGHT" + "[" + $e.getPayload() + "]");  
+	service.handleDietRestrictionsResponse($topic, $e); 
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end 
+rule "HANDLE EatingAllergies"
+	salience 999999999
+when
+	$e : EVENT(value == "EatingAllergies")
+	$topic : Topic(answered == false)
+then
+	logger.info("EatingAllergies: CAUGHT" + "[" + $e.getPayload() + "]");
+	  
+	service.handleEatingAllergiesResponse($topic); 
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end 
+rule "HANDLE FavouriteFood"
+	salience 999999999
+when
+	$e : EVENT(value == "FavouriteFood")
+	$topic : Topic(answered == false)
+then
+	logger.info("FavouriteFood: CAUGHT" + "[" + $e.getPayload() + "]");
+	  
+	service.handleFavouriteFoodResponse($topic); 
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end 
+rule "HANDLE EatsAnimalProduct"
+	salience 999999999
+when
+	$e : EVENT(value == "EatsAnimalProduct")
+	$topic : Topic(answered == false)
+then
+	logger.info("EatsAnimalProduct: CAUGHT" + "[" + $e.getPayload() + "]");
+	  
+	service.handleEatsAnimalProductResponse($topic); 
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end 
+
+rule "HANDLE DrinkAlcohol"
+	salience 999999999
+when
+	$e : EVENT(value == "DrinkAlcohol") 
+	$topic : Topic(answered == false)
+then
+	logger.info("DrinkAlcohol: CAUGHT" + "[" + $e.getPayload() + "]");
+	  
+	service.handleDrinkAlcoholResponse($topic); 
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end
+
+/* SOCIAL MEDIA */
+rule "HANDLE SocialMedia"
+	salience 999999999
+when
+	$e : EVENT(value == "SocialMedia")
+	$topic : Topic(answered == false)
+then
+	logger.info("SocialMedia: CAUGHT" + "[" + $e.getPayload() + "]");
+	  
+	service.handleSocialMediaTopicsResponse($topic); 
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end  
+
+/* LOCAL EVENT*/
+rule "HANDLE LocalEvent"
+	salience 999999999
+when
+	$e : EVENT(value == "LocalEvent")
+	$topic : Topic(answered == false)
+then
+	logger.info("LocalEvent: CAUGHT" + "[" + $e.getPayload() + "]");
+	  
+	service.handleLocalEventResponse($topic); 
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end 
+
+/* Recipe*/
+rule "HANDLE Recipe"
+	salience 999999999
+when
+	$e : EVENT(value == "ShowRecipe")
+	$topic : Topic(answered == false)
+then
+	logger.info("Recipe: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.handleRecipeResponse($topic);  
+	retract($e);  
+	modify($topic){
+		setAnswered(true);
+	} 
+end 
+
+
+rule "HANDLE VaccineCalendarContext"
+	salience 999999999
+when
+	$e : EVENT(value == "VaccineCalendarContext")
+	$topic : Topic(answered == false)
+then
+	logger.info("VaccineCalendarContext: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.generateURLResponse("http://www.msssi.gob.es/ciudadanos/proteccionSalud/vacunaciones/docs/CalendarioVacunacion2017.pdf", "Here is a link with some information.");
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end 
+
+rule "HANDLE NearestHealthcareCenter"
+	salience 999999999
+when
+	$e : EVENT(value == "RequestClosestHealthCenter")
+	$topic : Topic(answered == false)
+then
+	logger.info("RequestClosestHealthCenter: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.handleNearestPlaces($topic, "hospital");  
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end 
+
+rule "HANDLE NearestParks"
+	salience 999999999
+when
+	$e : EVENT(value == "RequestClosestParks")
+	$topic : Topic(answered == false)
+then
+	logger.info("RequestClosestParks: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.handleNearestPlaces($topic, "park");  
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end 
+
+/*
+rule "HANDLE BreastMilkBenefits"
+	salience 999999999
+when
+	$e : EVENT(value == "BreastMilkBenefits")
+	$topic : Topic(answered == false)
+then
+	logger.info("BreastMilkBenefits: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.callIR($topic);  
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end 
+*/
+/*
+rule "HANDLE BabyContext"
+	salience 999999999
+when
+	$e : EVENT(value == "BabyContext")
+	$topic : Topic(answered == false)
+then
+	logger.info("BabyContext: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.callIR($topic);  
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end 
+*/
+
+rule "HANDLE AdditionalQueryBreastfeeding"
+	salience 999999999
+when
+	$e : EVENT(value == "AdditionalQueryBreastfeeding")
+	$topic : Topic(answered == false)
+then
+	logger.info("AdditionalQueryBreastfeeding: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.generateURLResponse("https://mammalia.info/wp-content/uploads/2016/02/triptico-lactancia-prolongada-AEP.pdf", "");  
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end 
+
+rule "HANDLE AdditionalQueryBreastfeedingAssociation"
+	salience 999999999
+when
+	$e : EVENT(value == "AdditionalQueryBreastfeedingAssociation")
+	$topic : Topic(answered == false)
+then
+	logger.info("AdditionalQueryBreastfeedingAssociation: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.generateURLResponse("https://mammalia.info/wp-content/uploads/2016/02/triptico-lactancia-prolongada-AEP.pdf", "");  
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end 
+
+rule "HANDLE AdditionalBabyMeasurement"
+	salience 999999999
+when
+	$e : EVENT(value == "AdditionalBabyMeasurement")
+	$topic : Topic(answered == false)
+then
+	logger.info("AdditionalBabyMeasurement: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.generateURLResponse("https://www.guiainfantil.com/salud/embarazo/tabla_pesos.htm", "");  
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end 
+
+rule "HANDLE BabyContextCheckUpRecommended"
+	salience 999999999
+when
+	$e : EVENT(value == "BabyContextCheckUpRecommended")
+	$topic : Topic(answered == false)
+then
+	logger.info("BabyContextCheckUpRecommended: CAUGHT" + "[" + $e.getPayload() + "]");
+	String text = service.handleBabyContextCheckUpRecommended($topic);  
+	service.callIR($topic, text);
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end 
+
+rule "HANDLE SocialMediaVaccination"
+	salience 999999999
+when
+	$e : EVENT(value == "SocialMediaVaccination")
+	$topic : Topic(answered == false)
+then
+	logger.info("SocialMediaVaccination: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.handleSocialMediaKeywordResponse($topic, "vacunaci%C3%B3n"); 
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end 
+
+
+rule "HANDLE AdditionalVaccineContext"
+	salience 999999999
+when
+	$e : EVENT(value == "AdditionalVaccineContext")
+	$topic : Topic(answered == false)
+then
+	logger.info("AdditionalVaccineContext: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.generateURLResponse("http://enfamilia.aeped.es/prevencion/respuestas-preguntas-frecuentes-sobre-vacunas","");  
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end 
+
+
+rule "HANDLE AdditionalBabyContextCheckUp"
+	salience 999999999
+when
+	$e : EVENT(value == "AdditionalBabyContextCheckUp")
+	$topic : Topic(answered == false)
+then
+	logger.info("AdditionalBabyContextCheckUp: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.generateURLResponse("https://www.guiainfantil.com/articulos/bebes/desarrollo/revisiones-medicas-del-bebe/", "");  
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end 
+
+rule "HANDLE AdditionalBackPainContext"
+	salience 999999999
+when
+	$e : EVENT(value == "AdditionalBackPainContext")
+	$topic : Topic(answered == false)
+then
+	logger.info("AdditionalBackPainContext: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.generateURLResponse("https://www.semfyc.es/wp-content/uploads/2016/07/14_01.pdf", "Here is a link with additional information.");  
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end 
+
+rule "HANDLE AdditionalDementiaDefinitionContext"
+	salience 999999999
+when
+	$e : EVENT(value == "AdditionalDementiaDefinitionContext")
+	$topic : Topic(answered == false)
+then
+	logger.info("AdditionalDementiaDefinitionContext: CAUGHT" + "[" + $e.getPayload() + "]");
+	if($topic.getLanguage().toLowerCase().equals("de")) {
+		service.generateURLResponse("http://www.alzheimer-bw.de/demenzen/demenz-was-ist-das/", "Here is a link with additional information.");
+	} else {
+		service.generateURLResponse("https://www.fightdementia.org.au/files/helpsheets/Helpsheet-AboutDementia01-WhatIsDementia_polish.pdf", "Here is a link with additional information.");
+	}
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end 
+
+rule "HANDLE AdditionalDiabetesDefinitionContext"
+	salience 999999999
+when
+	$e : EVENT(value == "AdditionalDiabetesDefinitionContext")
+	$topic : Topic(answered == false)
+then
+	logger.info("AdditionalDiabetesDefinitionContext: CAUGHT" + "[" + $e.getPayload() + "]");
+	if($topic.getLanguage().toLowerCase().equals("de")) {
+		service.generateURLResponse("http://www.ernaehrung.de/tipps/diabetes/diab11.php", "Here is a link with additional information.");
+	} else {
+		service.generateURLResponse("http://menudiabetyka.pl/dieta-cukrzycowa/co-to-jest-dieta-cukrzycowa/", "Here is a link with additional information.");
+	}
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end 
+
+rule "HANDLE AdditionalHealthAssistanceMigrantsContext"
+	salience 999999999
+when
+	$e : EVENT(value == "AdditionalHealthAssistanceMigrantsContext")
+	$topic : Topic(answered == false)
+then
+	logger.info("AdditionalHealthAssistanceMigrantsContext: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.generateURLResponse("https://www.semfyc.es/wp-content/uploads/2016/07/23_05.pdf", "");  
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end 
+
+rule "HANDLE SocialSecurityNumberContext"
+	salience 999999999
+when
+	$e : EVENT(value == "SocialSecurityNumberContext")
+	$topic : Topic(answered == false)
+then
+	logger.info("SocialSecurityNumberContext: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.generateURLResponse("http://www.seg-social.es/Internet_1/Masinformacion/TramitesyGestiones/ObtenciondelNumerod44084/index.htm", "Here is a link with some information.");  
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end 
+
+
+
+
+rule "HANDLE HealthCardContext"
+	salience 999999999
+when
+	$e : EVENT(value == "HealthCardContext")
+	$topic : Topic(answered == false)
+then
+	logger.info("HealthCardContext: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.generateURLResponse("https://www.semfyc.es/wp-content/uploads/2016/07/23_05.pdf", "Here is a link with some information.");  
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end 
+
+rule "HANDLE AppointmentPediatricianContext"
+	salience 999999999
+when
+	$e : EVENT(value == "AppointmentPediatricianContext")
+	$topic : Topic(answered == false)
+then
+	logger.info("AppointmentPediatricianContext: CAUGHT" + "[" + $e.getPayload() + "]");
+	
+	String location = service.getLocation();
+	if(location != null) {
+		if(location.toLowerCase().equals("madrid")){
+			service.generateURLResponse("https://www.citaprevia.sanidadmadrid.org/Forms/Acceso.aspx", "Here is a link with some information.");		
+		} else {
+			service.generateURLResponse("https://ws1.ics.gencat.cat/VisitesIServeis/programacio_visites/Visites.aspx", "Here is a link with some information.");
+		}
+	} else {
+		service.generateURLResponse("unknown location", "To ask a family doctor appointment.");
+	}
+	
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end 
+
+rule "HANDLE EmergencyContext"
+	salience 999999999
+when
+	$e : EVENT(value == "EmergencyContext")
+	$topic : Topic(answered == false)
+then
+	logger.info("EmergencyContext: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.generateTextResponse("Si usted piensa que su hijo está experimentando una reacción seria, llame a su médico o al teléfono de emergencias 112 o bien lleve a su hijo a un consultorio médico inmediatamente y describa lo sucedido."); 
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end 
+
+rule "HANDLE EmergencyContact"
+	salience 999999999
+when
+	$e : EVENT(value == "EmergencyContact")
+	$topic : Topic(answered == false)
+then
+	logger.info("EmergencyContact: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.generateTextResponse("En caso de urgencia vital, los teléfonos de emergencias son 112 y 061."); 
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end
+
+rule "HANDLE ActivityDurationContext"
+	salience 999999999 
+when
+	$e : EVENT(value == "ActivityDurationContext")
+	$topic : Topic(answered == false)
+then
+	logger.info("ActivityDurationContext: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.handleActivityDuration($topic); 
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end 
+
+rule "HANDLE ToiletFrequencyContext"
+	salience 999999999 
+when
+	$e : EVENT(value == "ToiletFrequencyContext")
+	$topic : Topic(answered == false)
+then
+	logger.info("ToiletFrequencyContext: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.handleToiletFrequency($topic); 
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end
+
+rule "HANDLE WakeUpFrequencyContext"
+	salience 999999999 
+when
+	$e : EVENT(value == "WakeUpFrequencyContext")
+	$topic : Topic(answered == false)
+then 
+	logger.info("WakeUpFrequencyContext: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.handleWakeUpFrequencyContext($topic); 
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end
+
+rule "HANDLE SleepTimeContext"
+	salience 999999999 
+when
+	$e : EVENT(value == "SleepTimeContext")
+	$topic : Topic(answered == false)
+then 
+	logger.info("SleepTimeContext: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.handleSleepTimeContext($topic);  
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end
+
+rule "HANDLE WakeUpContext"
+	salience 999999999 
+when
+	$e : EVENT(value == "WakeUpContext")
+	$topic : Topic(answered == false)
+then 
+	logger.info("WakeUpContext: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.handleWakeUpContext($topic);  
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end
+
+rule "HANDLE NeedsAssistance"
+	salience 999999999 
+when
+	$e : EVENT(value == "NeedsAssistance")
+	$topic : Topic(answered == false)
+then 
+	logger.info("NeedsAssistance: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.handleNeedsAssistance($topic);  
+	retract($e); 
+	modify($topic){
+		setAnswered(true); 
+	} 
+end
+
+rule "HANDLE NeedsAssistanceForToilet"
+	salience 999999999 
+when
+	$e : EVENT(value == "NeedsAssistanceForToilet")
+	$topic : Topic(answered == false)
+then 
+	logger.info("NeedsAssistanceForToilet: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.handleNeedsAssistanceForToilet($topic);  
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end
+
+rule "HANDLE ActivityBeforeContext"
+	salience 999999999 
+when
+	$e : EVENT(value == "ActivityBeforeContext")
+	$topic : Topic(answered == false)
+then 
+	logger.info("ActivityBeforeContext: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.handleActivitiesBeforeSleep($topic);   
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end
+
+rule "HANDLE LikesToDoAfterAnActivityContext"
+	salience 999999999 
+when 
+	$e : EVENT(value == "LikesToDoAfterAnActivityContext")
+	$topic : Topic(answered == false)
+then 
+	logger.info("LikesToDoAfterAnActivityContext: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.handleLikesToDoAfterAnActivityContext($topic); 
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end
+
+rule "HANDLE Problem"
+	salience 999999999 
+when 
+	$e : EVENT(value == "Problem")
+	$topic : Topic(answered == false)
+then 
+	logger.info("Problem: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.handleProblems($topic); 
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end
+
+rule "HANDLE SleepProblem"
+	salience 999999999 
+when 
+	$e : EVENT(value == "SleepProblem")
+	$topic : Topic(answered == false)
+then 
+	logger.info("SleepProblem: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.handleSleepProblem($topic);  
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end
+
+rule "HANDLE SleepHelp"
+	salience 999999999 
+when 
+	$e : EVENT(value == "SleepHelp")
+	$topic : Topic(answered == false)
+then 
+	logger.info("SleepHelp: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.handleSleepHelp($topic);   
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end
+rule "HANDLE DiseaseContext"
+	salience 999999999 
+when 
+	$e : EVENT(value == "DiseaseContext")
+	$topic : Topic(answered == false)
+then 
+	logger.info("DiseaseContext: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.handleDiseaseContext($topic);  
+	retract($e);  
+	modify($topic){
+		setAnswered(true);
+	} 
+end
+
+rule "HANDLE MemoryProblem"
+	salience 999999999 
+when 
+	$e : EVENT(value == "MemoryProblem")
+	$topic : Topic(answered == false)
+then 
+	logger.info("MemoryProblem: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.handleMemoryProblem($topic);  
+	retract($e);  
+	modify($topic){
+		setAnswered(true);
+	} 
+end
+rule "HANDLE FavouriteBoardGame"
+	salience 999999999 
+when 
+	$e : EVENT(value == "FavouriteBoardGame")
+	$topic : Topic(answered == false)
+then 
+	logger.info("FavouriteBoardGame: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.handleFavouriteBoardGame($topic);   
+	retract($e);   
+	modify($topic){
+		setAnswered(true);
+	} 
+end
+
+rule "HANDLE IndividualContext"
+	salience 999999999
+when
+	$e : EVENT(value == "IndividualContext")
+	$topic : Topic(answered == false)
+then
+	logger.info("IndividualContext: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.callIndividualContext($topic, $e.getPayload());  
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end 
+
+rule "HANDLE GenericContext"
+	salience 999999998
+when
+	$e : EVENT(value == "GenericContext")
+	$topic : Topic(answered == false)
+then
+	logger.info("GenericContext: CAUGHT" + "[" + $e.getPayload() + "]");
+	service.callIR($topic);  
+	retract($e); 
+	modify($topic){
+		setAnswered(true);
+	} 
+end 
+
+
+
+
+rule "missing topic"
+	salience -10
+when
+	$topic : Topic(answered == false)
+then
+	logger.info("MissingTopic: CAUGHT");
+	OntClass partialTopic = service.partialTopic;  
+	if(partialTopic == null){
+		service.generateUnknownResponse(); 
+		modify($topic){
+			setAnswered(true)
+		}
+	}
+	else {
+		logger.info("MissingTopic: Adding " + partialTopic);
+		service.partialTopicRequested = true;
+		modify($topic){
+			setValues(new ArrayList(Collections.singletonList(partialTopic)))
+		}
+	}
+end 
+
+//(ArrayList) Collections.singletonList(partialTopic)
+
+/*
+rule "collect" 
+when
+	$alarms : ArrayList()
+              from collect( LAParserResult(  ) )
+    
+then 
+    logger.info($alarms.size() + "");       
+end
+
+rule "recent" 
+when
+	$latest : ArrayList()
+              from collect( LAParserResult() over window:length( 2 ) )
+    
+then 
+    logger.info($latest+ "");       
+end
+*/

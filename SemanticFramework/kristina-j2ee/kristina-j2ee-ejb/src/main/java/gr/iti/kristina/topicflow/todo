@@ -1,0 +1,19 @@
+ - should I keep state? e.g. provide the same responses no matter if they have been answered?
+ 
+ - clarification: "What kind of sleeping problems do you mean?" How to LG???
+ 
+ (v) in clarifications we should hold la concepts!!!
+ 
+ 
+ - TODO need to see how to get the actual food type from the user management (diet restrictions sweet) 
+ 
+ - Awakening during night (GUI does not allow entering number)
+ 
+ - baby gains weight -> fixed text
+ 
+ CLARIFICATION QUESTION TYPES:
+ - $proactive$: I can tell you about X AND Y AND Z
+ - $clarification$: Do you mean X or Y or Z?
+ - $noFurtherInformation$: I have no further information on this topic
+ - $failure$: I am sorry, I didn't understand you
+ - $??$: What kind of sleeping problems do you mean?

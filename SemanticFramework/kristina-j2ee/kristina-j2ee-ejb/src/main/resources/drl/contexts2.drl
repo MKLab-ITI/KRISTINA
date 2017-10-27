@@ -1,0 +1,51 @@
+package gr.iti.kristina.qa.rules
+
+import java.util.Map.Entry;
+//import gr.iti.kristina.core.qa.*;
+//import gr.iti.kristina.core.qa.rules.*;
+//import gr.iti.kristina.core.qa.Triple;
+import gr.iti.kristina.model.*;
+import java.util.HashSet;
+//import gr.iti.kristina.helpers.functions.Print
+import gr.iti.kristina.utils.*;
+import org.jboss.logging.Logger;
+
+global org.jboss.logging.Logger logger
+global gr.iti.kristina.model.ContextBuilder service
+
+
+rule "transitive" 
+    salience 110
+when
+    $t1: Triple($connections1:connections)
+    $t2: Triple(this != $t1, $connections2:connections) from $connections1    
+    $t3: Triple(this != $t2, $connections1 not contains this) from $connections2
+then 
+    $t1.add($t3);
+    update($t1);
+    logger.info("clusters merged ");   
+    
+end
+
+
+rule "direct links" 
+    salience 100
+when
+    $t1: Triple($s1:s, $o1:o)
+    $t2: Triple(this != $t1, $s2:s, $o2:o, $o2 == $s1 && $s2 != $o1, connections not contains $t1 )
+then
+    $t2.add($t1);
+    update($t2);
+    logger.info("triple connected");   
+end
+
+rule "print" 
+    salience 0
+when
+    $t1: Triple($s1:s, $p1:p, $o1:o, $connections:connections && $connections.size() >0)
+then
+    logger.info("---" + $s1 + ", " + $p1 + ", " + $o1);   
+    logger.info("-----" + Utils.flattenCollection($connections));   
+end
+
+

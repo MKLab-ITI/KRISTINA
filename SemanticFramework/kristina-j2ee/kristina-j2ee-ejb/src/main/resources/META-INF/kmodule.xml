@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<kmodule xmlns="http://jboss.org/kie/6.0.0/kmodule">   
+  
+    <kbase name="contexts" eventProcessingMode="cloud" packages="drl.contexts">
+        <ksession name="contextsKSession" type="stateful" />
+    </kbase>
+    
+    <kbase name="ruleContext" eventProcessingMode="stream" packages="drl.ruleContext">
+        <ksession name="ruleContextKSession" type="stateful" />
+    </kbase>
+    
+    <kbase name="fusion" eventProcessingMode="stream" packages="drl.fusion">
+        <ksession name="fusionKSession" type="stateful" />
+    </kbase>
+    
+    
+    
+    
+  
+</kmodule>

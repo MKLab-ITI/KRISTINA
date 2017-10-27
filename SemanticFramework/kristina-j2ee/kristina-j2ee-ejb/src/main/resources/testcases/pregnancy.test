@@ -1,0 +1,12 @@
+[
+	{
+		"id": 1,
+		"input": ["A","B"],
+		"output": [
+			{
+				"type": "statement",
+				"topics": ["C", "D"]
+			}
+		]
+	}
+]

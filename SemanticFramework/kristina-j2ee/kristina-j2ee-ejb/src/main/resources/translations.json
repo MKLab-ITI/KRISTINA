@@ -1,0 +1,56 @@
+[
+	{
+		"word": "pregnancy",
+		"es": "1",
+		"tr": "2",
+		"de": "3"
+	},
+	{
+		"word": "symptom",
+		"es": "",
+		"tr": "",
+		"de": ""
+	},
+	{
+		"word": "breastfeeding",
+		"es": "amamantamiento",
+		"tr": "",
+		"de": ""
+	},
+	{
+		"word": "cinema",
+		"es": "cine",
+		"tr": "sinema",
+		"de": "kino"
+	},
+	{
+		"word": "concert",
+		"es": "concierto",
+		"tr": "konser",
+		"de": "konzert"
+	},
+	{
+		"word": "movie",
+		"es": "película",
+		"tr": "film",
+		"de": "film"
+	},
+	{
+		"word": "politics",
+		"es": "política",
+		"tr": "siyaset",
+		"de": "politik"
+	},
+	{
+		"word": "sports",
+		"es": "deportes",
+		"tr": "spor dalları",
+		"de": "sport"
+	},
+	{
+		"word": "theater",
+		"es": "teatro",
+		"tr": "tiyatro",
+		"de": "theater"
+	}	
+]

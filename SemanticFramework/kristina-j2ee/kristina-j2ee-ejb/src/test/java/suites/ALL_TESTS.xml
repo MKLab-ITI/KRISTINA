@@ -1,0 +1,64 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+  
+<suite name="Suite_All" verbose="1">
+  <test name="EatingRoutineTest" >
+    <classes>
+      <class name="uc1.na_he.EatingRoutineTest"/>
+    </classes>
+  </test>
+  
+  <test name="SleepingRoutineTest" >
+    <classes>
+      <class name="uc1.na_he.SleepingRoutineTest"/>
+    </classes>
+  </test>
+  
+  <test name="SocialCompanionTest" >
+    <classes>
+      <class name="uc1.sc.SocialCompanionTest"/>
+    </classes>
+  </test>
+  
+  <test name="PregnancyTest" >
+    <classes>
+      <class name="uc2.he.PregnancyTest"/>
+    </classes>
+  </test>
+  
+  <test name="BreastFeedingTest" >
+    <classes>
+      <class name="uc2.he.BreastFeedingTest"/>
+    </classes>
+  </test>
+  
+  <test name="BabyWeightTest" >
+    <classes>
+      <class name="uc2.he.BabyWeightTest"/>
+    </classes>
+  </test>
+  <test name="BabyStimulateTest" >
+    <classes>
+      <class name="uc2.he.BabyStimulateTest"/>
+    </classes>
+  </test>
+  
+  <test name="BabyRoomSleepTest" >
+    <classes>
+      <class name="uc2.he.BabyRoomSleepTest"/>
+    </classes>
+  </test>
+  
+  <test name="BirthControlTest" >
+    <classes>
+      <class name="uc2.he.BirthControlTest"/>
+    </classes>
+  </test>
+  
+  <test name="AppointmentTest" >
+    <classes>
+      <class name="uc2.he.AppointmentTest"/>
+    </classes>
+  </test>
+  
+  
+</suite>

@@ -1,0 +1,196 @@
+# baseURI: http://kristina-project.eu/ontologies/responses
+# imports: http://kristina-project.eu/ontologies/context-light/v1
+
+@prefix : <http://kristina-project.eu/ontologies/responses#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix spin: <http://spinrdf.org/spin#> .
+@prefix topic: <http://kristina-project.eu/ontologies/context-light/v1#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://kristina-project.eu/ontologies/responses>
+  rdf:type owl:Ontology ;
+  spin:imports <http://topbraid.org/spin/owlrl-all> ;
+  owl:imports <http://kristina-project.eu/ontologies/context-light/v1> ;
+  owl:versionInfo "Created with TopBraid Composer"^^xsd:string ;
+.
+:AdditionalInformationRequest
+  rdf:type owl:Class ;
+  rdfs:subClassOf :RequestResponse ;
+.
+:BehaviouralAttribute
+  rdf:type owl:Class ;
+  rdfs:subClassOf :DataAcquisitionTrigger ;
+.
+:BiographicalAttribute
+  rdf:type owl:Class ;
+  rdfs:subClassOf :DataAcquisitionTrigger ;
+.
+:ClarificationRequest
+  rdf:type owl:Class ;
+  rdfs:subClassOf :RequestResponse ;
+.
+:ConversationTrigger
+  rdf:type owl:Class ;
+  rdfs:comment "Root of conversation triggering questions, i.e. questions initiated by the system for acquiring information"^^xsd:string ;
+  rdfs:subClassOf :RequestResponse ;
+.
+:DataAcquisitionTrigger
+  rdf:type owl:Class ;
+  rdfs:subClassOf :ConversationTrigger ;
+.
+:EventResponse
+  rdf:type owl:Class ;
+  rdfs:comment "Abstract concept for designating event-related KI responses (system-specific)"^^xsd:string ;
+  rdfs:subClassOf :Response ;
+  owl:equivalentClass [
+      rdf:type owl:Restriction ;
+      owl:hasValue :event ;
+      owl:onProperty :responseType ;
+    ] ;
+.
+:MissingInformationRequest
+  rdf:type owl:Class ;
+  rdfs:subClassOf :RequestResponse ;
+.
+:RequestResponse
+  rdf:type owl:Class ;
+  rdfs:comment "Response type for requesting additional input"^^xsd:string ;
+  rdfs:subClassOf :Response ;
+.
+:Response
+  rdf:type owl:Class ;
+  rdfs:comment "A response has a plausibility and a responseType (designating the provenance of the response). The actual response content is captured by the properties rdf and text. rdf is used to point to the KB RDF triples (reification) of the KB, while text is used for textual output."^^xsd:string ;
+  rdfs:subClassOf owl:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom rdf:Statement ;
+      owl:onProperty :rdf ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom xsd:string ;
+      owl:onProperty :text ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:onClass :ResponseType ;
+      owl:onProperty :responseType ;
+      owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:onDataRange xsd:double ;
+      owl:onProperty :plausibility ;
+      owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+    ] ;
+.
+:ResponseContainer
+  rdf:type owl:Class ;
+  rdfs:comment "Container class for wrapping one or more responses to a given query context. A container response instance is associated with one or more responses, a timestamp and the conversational context inferred by KI (topic:Context is the root of the context/topic hierarchy of the imported ontology)"^^xsd:string ;
+  rdfs:subClassOf owl:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onClass :Response ;
+      owl:onProperty :containsResponse ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:onProperty :conversationalContext ;
+      owl:someValuesFrom topic:Context ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:onProperty :timestamp ;
+      owl:someValuesFrom xsd:dateTime ;
+    ] ;
+.
+:ResponseType
+  rdf:type owl:Class ;
+  rdfs:comment "3 response types are supported: KB-driven, IR-driven and event-driven (the last one is under investigation)"^^xsd:string ;
+  rdfs:subClassOf owl:Thing ;
+  owl:equivalentClass [
+      rdf:type owl:Class ;
+      owl:oneOf [
+          rdf:type rdf:List ;
+          rdf:first :event ;
+          rdf:rest [
+              rdf:type rdf:List ;
+              rdf:first :free_text ;
+              rdf:rest [
+                  rdf:type rdf:List ;
+                  rdf:first :structured ;
+                  rdf:rest () ;
+                ] ;
+            ] ;
+        ] ;
+    ] ;
+.
+:SmallTalkTrigger
+  rdf:type owl:Class ;
+  rdfs:comment "not sure..."^^xsd:string ;
+  rdfs:subClassOf :ConversationTrigger ;
+.
+:StatementResponse
+  rdf:type owl:Class ;
+  rdfs:comment "Abstract concept for capturing fact-like KI responses. May need to further extend this class, but not sure how to automatically generate more fine grained statement responses"^^xsd:string ;
+  rdfs:subClassOf :Response ;
+.
+:UnknownResponse
+  rdf:type owl:Class ;
+  rdfs:subClassOf :Response ;
+.
+:containsResponse
+  rdf:type owl:ObjectProperty ;
+  rdfs:domain :ResponseContainer ;
+  rdfs:range :Response ;
+.
+:conversationalContext
+  rdf:type owl:ObjectProperty ;
+  rdfs:domain :ResponseContainer ;
+  rdfs:range <http://kristina-project.eu/ontologies/context/v1#Context> ;
+.
+:event
+  rdf:type :ResponseType ;
+  rdf:type owl:NamedIndividual ;
+  rdfs:comment "An event-specific response"^^xsd:string ;
+.
+:free_text
+  rdf:type :ResponseType ;
+  rdf:type owl:NamedIndividual ;
+  rdfs:comment "Information retrieved from IR"^^xsd:string ;
+.
+:plausibility
+  rdf:type owl:DatatypeProperty ;
+  rdfs:domain :Response ;
+  rdfs:range xsd:double ;
+.
+:rdf
+  rdf:type owl:ObjectProperty ;
+  rdfs:domain :Response ;
+  rdfs:range rdf:Statement ;
+.
+:responseType
+  rdf:type owl:ObjectProperty ;
+  rdfs:domain :Response ;
+  rdfs:range :ResponseType ;
+.
+:structured
+  rdf:type :ResponseType ;
+  rdf:type owl:NamedIndividual ;
+  rdfs:comment "Information retrieved from the KB"^^xsd:string ;
+.
+:text
+  rdf:type owl:DatatypeProperty ;
+  rdfs:range xsd:string ;
+.
+:timestamp
+  rdf:type owl:DatatypeProperty ;
+  rdfs:range xsd:dateTime ;
+.
+rdf:Statement
+  rdf:type owl:Class ;
+.

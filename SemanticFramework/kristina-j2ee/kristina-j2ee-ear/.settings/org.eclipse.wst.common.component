@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="kristina-j2ee-ear">
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/ear-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/application" tag="defaultRootSource"/>
+        <dependent-module archiveName="kristina-j2ee-web.war" deploy-path="/" handle="module:/resource/kristina-j2ee-web/kristina-j2ee-web">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="kristina-j2ee-ejb.jar" deploy-path="/" handle="module:/resource/kristina-j2ee-ejb/kristina-j2ee-ejb">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="org.semanticweb.hermit.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/hermit-reasoner/org.semanticweb.hermit/1.3.8.4/org.semanticweb.hermit-1.3.8.4.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-logging.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/commons-logging/commons-logging/1.1.3/commons-logging-1.1.3.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="owlapi-distribution.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/net/sourceforge/owlapi/owlapi-distribution/3.4.10/owlapi-distribution-3.4.10.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="owlapi-apibinding.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/net/sourceforge/owlapi/owlapi-apibinding/3.4.10/owlapi-apibinding-3.4.10.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="org.osgi.core.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/apache/felix/org.osgi.core/1.4.0/org.osgi.core-1.4.0.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="owlapi-api.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/net/sourceforge/owlapi/owlapi-api/3.4.10/owlapi-api-3.4.10.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="owlapi-tools.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/net/sourceforge/owlapi/owlapi-tools/3.4.10/owlapi-tools-3.4.10.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="owlapi-impl.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/net/sourceforge/owlapi/owlapi-impl/3.4.10/owlapi-impl-3.4.10.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="owlapi-parsers.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/net/sourceforge/owlapi/owlapi-parsers/3.4.10/owlapi-parsers-3.4.10.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="owlapi-oboformat.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/net/sourceforge/owlapi/owlapi-oboformat/3.4.10/owlapi-oboformat-3.4.10.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="owlapi-contract.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/net/sourceforge/owlapi/owlapi-contract/3.4.10/owlapi-contract-3.4.10.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="axiom-api.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/apache/ws/commons/axiom/axiom-api/1.2.14/axiom-api-1.2.14.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="geronimo-activation_1.1_spec.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/apache/geronimo/specs/geronimo-activation_1.1_spec/1.1/geronimo-activation_1.1_spec-1.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="geronimo-javamail_1.4_spec.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/apache/geronimo/specs/geronimo-javamail_1.4_spec/1.7.1/geronimo-javamail_1.4_spec-1.7.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jaxen.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/jaxen/jaxen/1.1.4/jaxen-1.1.4.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="geronimo-stax-api_1.0_spec.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/apache/geronimo/specs/geronimo-stax-api_1.0_spec/1.0.1/geronimo-stax-api_1.0_spec-1.0.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="apache-mime4j-core.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/apache/james/apache-mime4j-core/0.7.2/apache-mime4j-core-0.7.2.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="axiom-c14n.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/apache/ws/commons/axiom/axiom-c14n/1.2.14/axiom-c14n-1.2.14.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="axiom-impl.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/apache/ws/commons/axiom/axiom-impl/1.2.14/axiom-impl-1.2.14.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="woodstox-core-asl.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/codehaus/woodstox/woodstox-core-asl/4.1.4/woodstox-core-asl-4.1.4.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="stax2-api.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/codehaus/woodstox/stax2-api/3.1.1/stax2-api-3.1.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="axiom-dom.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/apache/ws/commons/axiom/axiom-dom/1.2.14/axiom-dom-1.2.14.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="automaton.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/dk/brics/automaton/automaton/1.11-8/automaton-1.11-8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="pellet-jena.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/github/ansell/pellet/pellet-jena/2.3.3/pellet-jena-2.3.3.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jena.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/hp/hpl/jena/jena/2.6.4/jena-2.6.4.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="iri.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/hp/hpl/jena/iri/0.8/iri-0.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="icu4j.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/ibm/icu/icu4j/3.4.4/icu4j-3.4.4.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="xercesImpl.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/xerces/xercesImpl/2.7.1/xercesImpl-2.7.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="pellet-core.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/github/ansell/pellet/pellet-core/2.3.3/pellet-core-2.3.3.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="pellet-common.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/github/ansell/pellet/pellet-common/2.3.3/pellet-common-2.3.3.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="aterm-java.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/github/ansell/aterms/aterm-java/1.8.2-p1/aterm-java-1.8.2-p1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jjtraveler.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/github/ansell/jjtraveler/jjtraveler/0.6/jjtraveler-0.6.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="shared-objects.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/github/ansell/aterms/shared-objects/1.4.9-p1/shared-objects-1.4.9-p1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jgrapht-jdk1.5.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/jgrapht/jgrapht-jdk1.5/0.7.3/jgrapht-jdk1.5-0.7.3.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="xsdlib.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/msv/xsdlib/20030225/xsdlib-20030225.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="relaxngDatatype.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/msv/relaxngDatatype/20030225/relaxngDatatype-20030225.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="pellet-owlapiv3.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/github/ansell/pellet/pellet-owlapiv3/2.3.3/pellet-owlapiv3-2.3.3.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="owlapi-api.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/github/ansell/owlapi/owlapi-api/3.4.3.3-ansell/owlapi-api-3.4.3.3-ansell.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="abstract-service-loader.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/github/ansell/abstract-service-loader/abstract-service-loader/0.1/abstract-service-loader-0.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="owlapi-impl.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/github/ansell/owlapi/owlapi-impl/3.4.3.3-ansell/owlapi-impl-3.4.3.3-ansell.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="owlapi-parsers.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/github/ansell/owlapi/owlapi-parsers/3.4.3.3-ansell/owlapi-parsers-3.4.3.3-ansell.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="owlapi-tools.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/github/ansell/owlapi/owlapi-tools/3.4.3.3-ansell/owlapi-tools-3.4.3.3-ansell.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="pellet-query.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/github/ansell/pellet/pellet-query/2.3.3/pellet-query-2.3.3.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="arq.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/hp/hpl/jena/arq/2.8.7/arq-2.8.7.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="wstx-asl.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/codehaus/woodstox/wstx-asl/3.2.9/wstx-asl-3.2.9.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="stax-api.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/stax/stax-api/1.0.1/stax-api-1.0.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="lucene-core.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/apache/lucene/lucene-core/2.3.1/lucene-core-2.3.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="metainf-services.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/kohsuke/metainf-services/metainf-services/1.4/metainf-services-1.4.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="slf4j-log4j12.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/slf4j/slf4j-log4j12/1.6.0/slf4j-log4j12-1.6.0.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="slf4j-api.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/slf4j/slf4j-api/1.6.0/slf4j-api-1.6.0.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="log4j.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/log4j/log4j/1.2.14/log4j-1.2.14.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="ontologies.jar" deploy-path="/lib" handle="module:/resource/ontologies/ontologies">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-runtime.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-runtime/2.7.8/sesame-runtime-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-model.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-model/2.7.8/sesame-model-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-util.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-util/2.7.8/sesame-util-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-repository-api.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-repository-api/2.7.8/sesame-repository-api-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-query.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-query/2.7.8/sesame-query-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-repository-manager.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-repository-manager/2.7.8/sesame-repository-manager-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-repository-event.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-repository-event/2.7.8/sesame-repository-event-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-repository-http.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-repository-http/2.7.8/sesame-repository-http-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-repository-sparql.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-repository-sparql/2.7.8/sesame-repository-sparql-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-repository-contextaware.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-repository-contextaware/2.7.8/sesame-repository-contextaware-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-repository-sail.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-repository-sail/2.7.8/sesame-repository-sail-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-queryalgebra-model.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-queryalgebra-model/2.7.8/sesame-queryalgebra-model-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-sail-api.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-sail-api/2.7.8/sesame-sail-api-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-sail-federation.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-sail-federation/2.7.8/sesame-sail-federation-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-queryalgebra-evaluation.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-queryalgebra-evaluation/2.7.8/sesame-queryalgebra-evaluation-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-queryparser-api.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-queryparser-api/2.7.8/sesame-queryparser-api-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-queryparser-serql.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-queryparser-serql/2.7.8/sesame-queryparser-serql-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-queryparser-sparql.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-queryparser-sparql/2.7.8/sesame-queryparser-sparql-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-queryresultio-api.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-queryresultio-api/2.7.8/sesame-queryresultio-api-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-queryresultio-binary.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-queryresultio-binary/2.7.8/sesame-queryresultio-binary-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-queryresultio-sparqljson.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-queryresultio-sparqljson/2.7.8/sesame-queryresultio-sparqljson-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jackson-core.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/fasterxml/jackson/core/jackson-core/2.2.1/jackson-core-2.2.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-queryresultio-sparqlxml.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-queryresultio-sparqlxml/2.7.8/sesame-queryresultio-sparqlxml-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-queryresultio-text.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-queryresultio-text/2.7.8/sesame-queryresultio-text-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="opencsv.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/net/sf/opencsv/opencsv/2.0/opencsv-2.0.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-repository-dataset.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-repository-dataset/2.7.8/sesame-repository-dataset-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-http-protocol.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-http-protocol/2.7.8/sesame-http-protocol-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-http-client.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-http-client/2.7.8/sesame-http-client-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-httpclient.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/commons-httpclient/commons-httpclient/3.1/commons-httpclient-3.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-rio-api.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-rio-api/2.7.8/sesame-rio-api-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-rio-datatypes.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-rio-datatypes/2.7.8/sesame-rio-datatypes-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-rio-languages.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-rio-languages/2.7.8/sesame-rio-languages-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-rio-binary.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-rio-binary/2.7.8/sesame-rio-binary-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-rio-ntriples.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-rio-ntriples/2.7.8/sesame-rio-ntriples-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-io.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/commons-io/commons-io/2.4/commons-io-2.4.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-rio-nquads.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-rio-nquads/2.7.8/sesame-rio-nquads-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-rio-n3.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-rio-n3/2.7.8/sesame-rio-n3-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-rio-rdfjson.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-rio-rdfjson/2.7.8/sesame-rio-rdfjson-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-rio-rdfxml.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-rio-rdfxml/2.7.8/sesame-rio-rdfxml-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-rio-trix.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-rio-trix/2.7.8/sesame-rio-trix-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-rio-turtle.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-rio-turtle/2.7.8/sesame-rio-turtle-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-rio-trig.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-rio-trig/2.7.8/sesame-rio-trig-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-sail-inferencer.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-sail-inferencer/2.7.8/sesame-sail-inferencer-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-sail-memory.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-sail-memory/2.7.8/sesame-sail-memory-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-sail-nativerdf.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-sail-nativerdf/2.7.8/sesame-sail-nativerdf-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sesame-sail-rdbms.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/openrdf/sesame/sesame-sail-rdbms/2.7.8/sesame-sail-rdbms-2.7.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-dbcp.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/commons-dbcp/commons-dbcp/1.3/commons-dbcp-1.3.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-pool.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/commons-pool/commons-pool/1.5.4/commons-pool-1.5.4.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="drools-compiler.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/drools/drools-compiler/6.4.0.Final/drools-compiler-6.4.0.Final.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="drools-core.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/drools/drools-core/6.4.0.Final/drools-core-6.4.0.Final.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="kie-internal.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/kie/kie-internal/6.4.0.Final/kie-internal-6.4.0.Final.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="antlr-runtime.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/antlr/antlr-runtime/3.5/antlr-runtime-3.5.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="ecj.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/eclipse/jdt/core/compiler/ecj/4.4.2/ecj-4.4.2.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="mvel2.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/mvel/mvel2/2.2.8.Final/mvel2-2.2.8.Final.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="xstream.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/thoughtworks/xstream/xstream/1.4.7/xstream-1.4.7.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="xmlpull.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/xmlpull/xmlpull/1.1.3.1/xmlpull-1.1.3.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="xpp3_min.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/xpp3/xpp3_min/1.1.4c/xpp3_min-1.1.4c.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="protobuf-java.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/google/protobuf/protobuf-java/2.6.0/protobuf-java-2.6.0.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="kie-api.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/kie/kie-api/6.4.0.Final/kie-api-6.4.0.Final.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="httpclient.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/apache/httpcomponents/httpclient/4.5.2/httpclient-4.5.2.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="httpcore.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/apache/httpcomponents/httpcore/4.4.4/httpcore-4.4.4.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-codec.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/commons-codec/commons-codec/1.9/commons-codec-1.9.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="gson.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/google/code/gson/gson/2.7/gson-2.7.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="joda-time.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/joda-time/joda-time/2.9.3/joda-time-2.9.3.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="guava.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/google/guava/guava/19.0/guava-19.0.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-lang3.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/apache/commons/commons-lang3/3.0/commons-lang3-3.0.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="json.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/json/json/20160212/json-20160212.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+    </wb-module>
+</project-modules>

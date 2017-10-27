@@ -1,0 +1,343 @@
+package gr.iti.kristina.core.fusion.rules
+
+import org.jboss.logging.Logger;
+import gr.iti.kristina.model.fusion.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+
+global org.jboss.logging.Logger logger
+global gr.iti.kristina.services.FusionServiceBean service
+global String[] painContext
+global String[] valueContext
+
+declare Observation
+    @role( event )
+    @timestamp (start)
+    @expires( 11h35m )
+//    @duration (duration)
+end
+
+declare ConnectionHigh
+    m1 : Observation
+    m2 : Observation
+    type: String
+end
+
+declare ConnectionLow
+    m1 : Observation
+    m2 : Observation
+    type: String
+end
+
+declare PathHigh
+    bag : ArrayList
+    type: String
+end
+
+declare PathLow
+    bag : ArrayList
+    type: String
+end
+
+
+
+rule "determine directly connected HIGH measurements" 
+    salience 100
+when
+	$key : String() from valueContext
+    $m1 : Observation(type==$key, $st1: start, $et1 : end,  $v1:value, $v1 >= 0.7) from entry-point "context"
+    $m2 : Observation(this != $m1, type==$key, this after[ 0s, 2s ] $m1, $v2:value, $v2 >= 0.7 ) from entry-point "context"
+then
+    ConnectionHigh c = new ConnectionHigh();
+    c.setM1($m1);
+    c.setM2($m2);
+    c.setType($key);
+    entryPoints["context"].insert(c);
+    service.log("determine directly connected HIGH measurements");
+end
+
+rule "determine directly connected LOW measurements" 
+    salience 100
+when
+	$key : String() from valueContext
+    $m1 : Observation(type==$key, $st1: start, $et1 : end,  $v1:value, $v1 <= 0.3) from entry-point "context"
+    $m2 : Observation(this != $m1, type==$key, this after[ 0s, 2s ] $m1, $v2:value, $v2 <= 0.3 ) from entry-point "context"
+then
+    ConnectionLow c = new ConnectionLow();
+    c.setM1($m1);
+    c.setM2($m2);
+    c.setType($key);
+    entryPoints["context"].insert(c);
+end
+
+
+rule "transitivity HIGH" 
+    salience 90
+when
+    $c1 : ConnectionHigh($m11 : m1, $m12 : m2, $type:type) from entry-point "context"
+    $c2 : ConnectionHigh(this != $c1, m1 == $m12, $m22 : m2, type==$type) from entry-point "context"
+    not ConnectionHigh (m1 == $m11, m2 == $m22, type==$type) from entry-point "context"
+then
+    ConnectionHigh c = new ConnectionHigh();
+    c.setM1($m11);
+    c.setM2($m22);
+    c.setType($type);
+    entryPoints["context"].insert(c);
+end
+
+rule "transitivity LOW" 
+    salience 90
+when
+    $c1 : ConnectionLow($m11 : m1, $m12 : m2, $type:type) from entry-point "context"
+    $c2 : ConnectionLow(this != $c1, m1 == $m12, $m22 : m2, type==$type) from entry-point "context"
+    not ConnectionLow (m1 == $m11, m2 == $m22, type==$type) from entry-point "context"
+then
+    ConnectionLow c = new ConnectionLow();
+    c.setM1($m11);
+    c.setM2($m22);
+    c.setType($type);
+    entryPoints["context"].insert(c);
+end
+
+
+rule "add connection point to the bag1 HIGH" 
+    salience 80
+when
+	$key : String() from valueContext
+    $m1 : Observation(type==$key, $v:value, $v >= 0.7) from entry-point "context"
+    $c : ConnectionHigh(m1 == $m1, $m2 : m2, type==$key) from entry-point "context"
+    $p : PathHigh($bag : bag, type==$key, $m1 memberOf $bag, $m2 not memberOf $bag) from entry-point "context"
+then
+    modify ($p) {
+        getBag().add($m2);
+    }
+end
+rule "add connection point to the bag2 HIGH" 
+    salience 80
+when
+	$key : String() from valueContext
+    $m : Observation(type==$key, $v:value, $v >= 0.7) from entry-point "context"
+    $c : ConnectionHigh(type==$key, $m1 : m1, m2 == $m) from entry-point "context"
+    $p : PathHigh($bag : bag, type==$key, $m memberOf $bag, $m1 not memberOf $bag) from entry-point "context"
+then
+    modify ($p) {
+        getBag().add($m1);
+    }
+end
+
+rule "add connection point to the bag1 LOW" 
+    salience 80
+when
+	$key : String() from valueContext
+    $m1 : Observation(type==$key, $v:value, $v <=0.3) from entry-point "context"
+    $c : ConnectionLow(type==$key, m1 == $m1, $m2 : m2) from entry-point "context"
+    $p : PathLow(type==$key, $bag : bag, $m1 memberOf $bag, $m2 not memberOf $bag) from entry-point "context"
+then
+    modify ($p) {
+        getBag().add($m2);
+    }
+end
+
+rule "add connection point to the bag2 LOW" 
+    salience 80
+when
+	$key : String() from valueContext
+    $m : Observation(type==$key, $v:value, $v <=0.3) from entry-point "context"
+    $c : ConnectionLow(type==$key, $m1 : m1, m2 == $m) from entry-point "context"
+    $p : PathLow(type==$key, $bag : bag, $m memberOf $bag, $m1 not memberOf $bag) from entry-point "context"
+then
+    modify ($p) {
+        getBag().add($m1);
+    }
+end
+
+
+rule "initiate bag HIGH" 
+    salience 70
+when
+	$key : String() from valueContext
+    $m1 : Observation(type==$key, $v1:value, $v1 >= 0.7) from entry-point "context"
+    not PathHigh(type==$key, $bag : bag, $m1 memberOf $bag) from entry-point "context"
+then
+    PathHigh p = new PathHigh();
+    p.setBag(new ArrayList());
+    p.getBag().add($m1);
+    p.setType($key);
+    entryPoints["context"].insert(p);
+end
+
+rule "initiate bag LOW" 
+    salience 70
+when
+	$key : String() from valueContext
+    $m1 : Observation(type==$key, $v1:value, $v1 <= 0.3) from entry-point "context"
+    not PathLow(type==$key, $bag : bag, $m1 memberOf $bag) from entry-point "context"
+then
+    PathLow p = new PathLow();
+    p.setBag(new ArrayList());
+    p.getBag().add($m1);
+    p.setType($key);
+    entryPoints["context"].insert(p);
+end
+
+rule "create HIGH intervals" 
+when
+    $p : PathHigh($bag : bag, $bag.size() >= 3) from entry-point "context"
+then
+    service.logHighInterval((ArrayList) $bag);
+    
+end
+
+rule "create LOW intervals" 
+when
+    $p : PathLow($bag : bag, $bag.size() >= 3) from entry-point "context"
+then
+    service.logLowInterval((ArrayList) $bag);
+end
+
+/*
+rule "temp1" 
+when
+    $o1: Observation(type=="Fusion") from entry-point "context"
+    $o2: Observation(type=="Fusion", this != $o1, this overlaps $o1) from entry-point "context"
+then
+    service.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>fusion detected!");
+    
+end
+*/
+
+/*
+	the following two rules can be used for visualisation??
+*/
+rule "verbal item detected"
+when 
+	$v: Observation(type=="Verbal") from entry-point "context"
+then 
+	service.log("verbal item detected!");
+	service.addLatestOffline($v);
+end
+
+rule "non-verbal item detected"
+when 
+	$nv: Observation(type!="Verbal") from entry-point "context"
+then 
+	service.log("non-verbal item detected!" + $nv.getType());
+	service.addLatestOffline($nv);
+end
+
+/*
+	Fusion is triggered upon the insertion of a verbal event. 
+	The interval [-2,+2] is checked and the relevant events 
+	are collected in order to determine meaningful interpretations	
+*/
+
+rule "fusion of hurt reference and deictic gesture to the head"
+when
+	$key : String() from painContext
+	$v: Observation($keys:keyEntities && $keys contains $key) from entry-point "context"
+	//$nv: Observation(this != $v, type=="Gesture", bodyPart=="Head", this after[ -2s, 2s ] $v) from entry-point "context"	
+	$obs : ArrayList( size > 0)
+              from collect(
+              	Observation(this != $v, type=="Gesture", bodyPart=="Head", this after[ -2s, 2s ] $v) from entry-point "context"
+              )
+then 
+	service.log("headache detected:[" + $key + "]");
+	Observation o1 = service.getFirst($obs);
+	Observation o2 = service.getLast($obs);
+	//int id = service.getId($obs);
+	Observation o = new Observation();
+	o.setId(service.getId($obs) + "");
+	o.setType("Fusion");
+	o.setState("Headache x " + $obs.size());
+	o.setCLASS("Headache");
+	if($v.getStart().before(o1.getStart())){
+		o.setStart($v.getStart());
+	}
+	else {
+		o.setStart(o1.getStart());
+	}
+	if($v.getEnd().before(o2.getEnd())){
+		o.setEnd(o2.getEnd());
+	}
+	else {
+		o.setEnd($v.getEnd());
+	}
+	o.setContext($obs);
+	entryPoints["context"].insert(o);
+	service.addLatestOffline(o);
+end
+
+rule "fusion of hurt reference and deictic gesture to the chest"
+when
+	$key : String() from painContext
+	$v: Observation($keys:keyEntities && $keys contains $key) from entry-point "context"
+	//$nv: Observation(this != $v, type=="Gesture", bodyPart=="Chest", this after[ -2s, 2s ] $v) from entry-point "context"
+	
+	$obs : ArrayList( size > 0)
+              from collect(
+              	Observation(this != $v, type=="Gesture", bodyPart=="Chest", this after[ -2s, 2s ] $v) from entry-point "context"
+              )
+              
+then 
+	service.log("chestpain detected:[" + $key + "]");
+	Observation o1 = service.getFirst($obs);
+	Observation o2 = service.getLast($obs);
+	//int id = service.getId($obs);
+	Observation o = new Observation();
+	o.setId(service.getId($obs) + "");
+	o.setType("Fusion");
+	o.setState("ChestPain x " + $obs.size());
+	o.setCLASS("ChestPain");
+	if($v.getStart().before(o1.getStart())){
+		o.setStart($v.getStart());
+	}
+	else {
+		o.setStart(o1.getStart());
+	}
+	if($v.getEnd().before(o2.getEnd())){
+		o.setEnd(o2.getEnd());
+	}
+	else {
+		o.setEnd($v.getEnd());
+	}
+	o.setContext($obs);
+	entryPoints["context"].insert(o);
+	service.addLatestOffline(o);
+end
+
+
+rule "idle state / no verbal input detected"
+when 
+	$v: Observation(type=="Verbal") from entry-point "context"
+	not Observation(this != $v, type=="Verbal", this after[0s, 2s] $v) from entry-point "context"
+then 
+	service.log("no verbal input detected (idle)");
+end
+
+
+rule "latest"
+when 
+	$obs: HashSet() from collect(
+       Observation() over window:time(2s) from entry-point "context")
+then 
+	service.setLatest($obs);
+end
+
+/*
+query "latest"
+	$obs: ArrayList() from collect(
+       Observation() over window:time(3s) from entry-point "context")
+end
+*/
+
+
+/*
+rule "test" 
+when
+    $v: VerbalItem() from entry-point "context"
+    NonVerbalItem( this != $v, this after[0s,10s] $v ) from entry-point "context"
+then
+    logger.info("non-verbal event detected");   
+    service.log("ddd");
+end
+*/
