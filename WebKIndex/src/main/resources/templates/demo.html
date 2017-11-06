@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+<html >
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+    <title>WebKIndex Demo</title>
+
+    <!-- Bootstrap core CSS --><!--
+        <link href="resources/templates/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />-->
+
+    <!-- CSS -->
+    <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+   <!-- <link href="css/cover.css" rel="stylesheet" />-->
+    <link href="css/starter-template.css" rel="stylesheet"/>
+    <link href="css/demo.css" rel="stylesheet" />
+
+    <!-- Javascript -->
+    <script src="js/jquery-1.11.3.min.js"></script>
+    <script src="bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="js/demo.js"></script>
+</head>
+<!--<body>
+
+<div class="site-wrapper">
+
+    <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+
+            <div class="masthead clearfix">
+                <div class="inner">
+                    <h3 class="masthead-brand">WebKIndex</h3>
+                    <nav>
+                        <ul class="nav masthead-nav">
+                            <li ><a href="/">Home</a></li>
+                            <li class="active"><a href="#">Demo</a></li>
+                            <li ><a href="version">Version</a></li>
+                            <li ><a href="help">Help</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="inner cover">-->
+<body data-pinterest-extension-installed="cr1.39.1">
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">WebKIndex</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li ><a href="/">Home</a></li>
+                <li class="active"><a href="#">Demo</a></li>
+                <li ><a href="version">Version</a></li>
+                <li ><a href="info">Info</a></li>
+                <li ><a href="help">Help</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+
+<div class="container">
+
+    <div class="starter-template">
+       <div class="container-fluid row demo-row" id="first-row">
+           <div class="col-xs-3 demo-row-column">
+               <h3>Urls</h3>
+               <div class="list-group" id="initial-url-list">
+                   <button type="button" class="list-group-item" table="elderlycaretips_urls">elderlycaretips.info</button>
+               </div>
+           </div>
+           <div class="col-xs-9 demo-row-column" id="extracted-urls">
+               <h3>Extracted Urls</h3>
+               <!-- <i class="col-xs-2 glyphicon glyphicon glyphicon-arrow-right" id="right-arrow-urls"></i>-->
+               <div class="list-group col-xs-10 col-xs-offset-2" id="crawled-url-list">
+               </div>
+           </div>
+       </div>
+        <div class="container-fluid row demo-row" id="second-row" >
+            <!--<i class="col-xs-8 col-xs-offset-4 glyphicon glyphicon glyphicon-arrow-down" id="down-arrow-extract-content"></i>-->
+            <div class="col-xs-6">
+                <h3>Extracted Content</h3>
+                <div class="container-fluid  well well-lg" id="extracted-text">
+                </div>
+                <button type="button" class="btn btn-default" onclick="extract_concepts_nes()"><b>Extract Concepts and Named Entities</b></button>
+            </div>
+            <div class="col-xs-6">
+                <h3>Original Page</h3>
+                <iframe id="content-frame" src="" height="450px" width="100%">
+                    <p>A problem occurred.</p>
+                </iframe>
+            </div>
+        </div>
+        <div class="container-fluid row demo-row" id="third-row" >
+             <div class="">
+                <div class="col-xs-6 " id="concept-label"><h3>Concepts</h3></div>
+                <div class="col-xs-6 " id="ne-label"><h3>Named Entities</h3></div>
+            </div>
+            <div class="">
+                <div class="col-xs-6 table-parent" >
+                    <table class="table table-bordered" id="extracted-concepts">
+
+                    </table>
+                </div>
+                <div class="col-xs-6 table-parent" >
+                    <table class="table table-bordered" id="extracted-ne">
+
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid row " id="forth-row" >
+            <a href="index?query=Night%20Time%20Incontinence%20In%20the%20Elderly" target="_blank" class="btn btn-info" role="button">Retrieve Document using Text Query</a>
+            <a href="index?concept=MentalOrBehavioralDysfunction" target="_blank" class="btn btn-info" role="button">Retrieve Document using Concept Query</a>
+        </div>
+
+        <!--<div class="container-fluid row demo-row" id="last-row" ></div>-->
+    </div>
+</div>
+<footer class="footer">
+    <div class="container">
+        <p>WebKIndex developed @ <a href="http://www.iti.gr">ITI</a> / <a href="http://www.certh.gr">CERTH </a></p>
+        <p> Contact: <a href="mailto:spyridons@iti.gr">spyridons@iti.gr</a></p>
+    </div>
+</footer>
+
+
+
+
+</body>
+</html>

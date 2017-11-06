@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+        <title>WebKIndex Version</title>
+
+        <!-- Bootstrap core CSS --><!--
+        <link href="resources/templates/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />-->
+
+        <!-- CSS -->
+        <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <!--<link href="css/cover.css" rel="stylesheet" />-->
+        <link href="css/starter-template.css" rel="stylesheet"/>
+
+        <!-- Javascript -->
+        <script src="js/jquery-1.11.3.min.js"></script>
+        <script src="bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="js/version.js"></script>
+    </head>
+
+    <body data-pinterest-extension-installed="cr1.39.1">
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">WebKIndex</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li ><a href="/">Home</a></li>
+                    <li ><a href="demo">Demo</a></li>
+                    <li class="active"><a href="#">Version</a></li>
+                    <li ><a href="info">Info</a></li>
+                    <li ><a href="help">Help</a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <div class="starter-template">
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-addon">V</span>
+                        <span class="form-control" th:text="${current.getVersion()}">-</span>
+                    </div>
+                    <div>&nbsp;</div>
+                    <div class="input-group input-group-lg">
+                       <span class="input-group-addon">D</span>
+                        <span class="form-control" th:text="${current.getDate()}" >-</span>
+                    </div>
+                    <div>&nbsp;</div>
+                    <div class="panel panel-default">
+                        <table class="table">
+                            <tr th:each="desc : ${current.getDescription()}">
+                                <td th:text="${desc}" style="border-width:0px;">-</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div>&nbsp;</div>
+                    <div>&nbsp;</div>
+                    <p>
+                        <a href="javaScript:void(0);" onclick="toggle_history()" class="btn btn-lg btn-default">Version History</a>
+                    </p>
+                    <div>&nbsp;</div>
+            <div class="panel panel-default" id="history" style="display:none;">
+                    <table class="table "  >
+                        <tbody>
+                        <tr th:each="item : ${oldItems}" th:inline="text" style="border-bottom:1px solid #ddd;">
+                            <td th:text="${item.getVersion()}" style="border-top:0px;">-</td>
+                            <td th:text="${item.getDate()}" style="border-top:0px;">-</td>
+                            <td style="border-top:0px;">
+                                <table class="table" style="margin:0px;">
+                                    <tr th:each="desc : ${item.getDescription()}">
+                                        <td th:text="${desc}" style="border-width:0px;text-align:left;padding:0px;">-</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+            </div>
+        </div>
+
+            </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>WebKIndex developed @ <a href="http://www.iti.gr">ITI</a> / <a href="http://www.certh.gr">CERTH </a></p>
+            <p> Contact: <a href="mailto:spyridons@iti.gr">spyridons@iti.gr</a></p>
+        </div>
+    </footer>
+
+
+
+    </body>
+</html>

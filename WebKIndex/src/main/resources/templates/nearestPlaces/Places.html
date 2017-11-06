@@ -1,0 +1,59 @@
+
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+    <title>WebKIndex Nearest Places</title>
+
+    <!-- Bootstrap core CSS --><!--
+        <link href="resources/templates/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />-->
+
+    <!-- CSS -->
+    <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!--<link href="css/cover.css" rel="stylesheet" />-->
+    <link href="css/starter-template.css" rel="stylesheet"/>
+    <link href="dataTables/css/jquery.dataTables.min.css" rel="stylesheet"/>
+
+    <!-- Javascript -->
+    <script src="js/jquery-1.11.3.min.js"></script>
+    <script src="bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="dataTables/js/jquery.dataTables.min.js"></script>
+    <script src="js/passageTable.js"></script>
+</head>
+
+<body data-pinterest-extension-installed="cr1.39.1">
+
+<footer class="footer">
+    <div class="container">
+        <p>WebKIndex developed @ <a href="http://www.iti.gr">ITI</a> / <a href="http://www.certh.gr">CERTH </a></p>
+        <p> Contact: <a href="mailto:spyridons@iti.gr">spyridons@iti.gr</a></p>
+    </div>
+</footer>
+
+<div class="container">
+
+    <h2>Nearest places service response</h2>
+    <hr/><br/>
+
+    <h3>Places near: <span th:text="${address}"></span></h3>
+    <table class="table table-bordered" id="all-segmentation-table">
+        <thead>
+        <tr>
+            <th>Place</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${results}" th:inline="text">
+            <td><a th:text="${item.getResult().name}" th:href="${item.getUrl()}"></a></td>
+            <td th:text="${item.getResult().geometry.location.lat}"></td>
+            <td th:text="${item.getResult().geometry.location.lng}"></td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE HTML>
+<html >
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+    <title>WebKIndex Help</title>
+
+    <!-- Bootstrap core CSS --><!--
+        <link href="resources/templates/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />-->
+
+    <!-- CSS -->
+    <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!--<link href="css/cover.css" rel="stylesheet" />-->
+    <link href="css/starter-template.css" rel="stylesheet"/>
+
+    <!-- Javascript -->
+    <script src="js/jquery-1.11.3.min.js"></script>
+    <script src="bootstrap/dist/js/bootstrap.min.js"></script>
+</head>
+
+<body data-pinterest-extension-installed="cr1.39.1">
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">WebKIndex</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li ><a href="/">Home</a></li>
+                <li ><a href="demo">Demo</a></li>
+                <li ><a href="version">Version</a></li>
+                <li ><a href="info">Info</a></li>
+                <li class="active"><a href="#">Help</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+
+<div class="container">
+
+    <div class="starter-template">
+        <h1 class="cover-heading">Help</h1>
+        <p class="lead">Examples of making a query to KIndex.</p>
+        <div class="list-group">
+            <a href="index?query=baby%20sleep" target="_blank" class="list-group-item" >index?query=baby sleep</a>
+            <a href="newspaper?title=Wenn%20Männer%20online%20Minderjährige%20belästigen" target="_blank" class="list-group-item">newspaper?title=Fabian Bähr freut sich auf den 2. Horber Neckar-Balloncup-Start am Mittwoch</a>
+
+        </div>
+        <div class="row">
+
+           <div class = "col-xs-12" style="text-align:left;">
+                <h2>Notes</h2>
+
+                <h3>Newspaper</h3>
+                <ul >
+                    <!--<li>Available QueryObject Sources: website, twiter, forum, pdf</li>-->
+                    <li>How to call: <a href="newspaper?title=Wenn%20Männer%20online%20Minderjährige%20belästigen" >/newspaper?title=Here_goes_the_title</a></li>
+                    <li>Title may contain spaces, but the  url string has to be URL Encoded (ex: “space” -> %20) </li>
+                    <li>Article can be retrieved ONLY by title </li>
+                    <li>Newspaper crawling takes place every 12 hours. Last articles may not be indexed yet. </li>
+                    <li>Some articles in this newspaper are restricted from free access. Only publicly free articles are indexed (If a user can read an article in the browser, this article is publicly available!) </li>
+                    <li>The response is in json format. The Content of the article is in “content” field </li>
+                    <li>Source: <a href="http://www.tagblatt.de" target="_blank">http://www.tagblatt.de</a></li>
+                    <li><a href="newspaperCrawling" target="_blank" >Execute Newspaper Crawling</a></li>
+                </ul>
+                <h3>Document</h3>
+                <ul >
+                    <li>How to call: <a href="index?query=baby%20sleep" >/index?query=baby sleep</a></li>
+                    <li>Query may contain spaces, but the  url string has to be URL Encoded (ex: “space” -> %20) </li>
+                    <li>The response is in json format. The Content of the webpage is in “content” field. </li>
+                    <li>The passage is in “passage” field (For the current version, passage retrieval is not implemented yet, the passage provided is the 200 first characters of the document) </li>
+
+                </ul>
+                <h3>Passage Retrieval</h3>
+                <ul>
+                    <li>Print score table for a query: <a href="/passagetable?query=baby" >/passagetable?query=baby</a></li>
+                    <li>Print a list with top n documents of AllSegments index <a href="/getpassage?query=baby" >/getpassage?query=baby</a></li>
+                    <li>Print score table for a WebAp Dataset: <a href="/webappassagetable" >/webappassagetable</a></li>
+                    <li><a href="/query" >More query input options</a></li>
+                    <li><a href="/info" >Get info about the stored indices</a></li>
+                    <li><a href="/getprversions" >Get available passage retrieval versions</a></li>
+                    <li><a href="/getScrapedUrls?language=es" >Get indexed urls (ES)</a></li>
+                    <li><a href="/getScrapedContentFromUrl?url=http://enfamilia.aeped.es/temas-salud/dolor-en-rodillas-enfermedad-osgood-schlatter&amp;language=es" >Get scraped content from a url</a></li>
+                </ul>
+                <h3>Weather Service</h3>
+                <ul>
+                    <li>Call weather Service <a href="/weather?placeCode=foi_0206&amp;startDate=2016-07-25T00:00:00%2B00:00&amp;endDate=2016-07-26T05:00:00%2B00:00" >/weather?placeCode=foi_0206&amp;startDate=2016-07-25T00:00:00%2B00:00&amp;endDate=2016-07-26T05:00:00%2B00:00</a></li>
+                </ul>
+                <h3>Social Media</h3>
+                <ul>
+                    <li>Topic Detection Service JSON <a href="/topicDetection" >/topicDetection</a></li>
+                    <li>Topic Detection Service HTML <a href="/topicDetectionHTML" >/topicDetectionHTML</a></li>
+                    <li>Topic Detection Service link to HTML <a href="/topicDetectionUrl" >/topicDetectionUrl</a></li>
+                    <li>Get tweet content (DE) with id: <a href="/getTweet?id=859036624826642432" >859036624826642432</a></li>
+                </ul>
+                <h3>Extra services</h3>
+                <ul>
+                    <li>Nearby parks/hospitals example <a href="/places?address=Veria">/places?address=Veria</a> </li>
+                    <li>Recipe query example <a href="/recipe?query=Zwetschgendatschi">/recipe?query=Zwetschgendatschi</a> </li>
+                    <li>Baby event query example <a href="/getBabyEvent?town=Madrid">/getBabyEvent?town=Madrid</a> </li>
+                    <li>Generic event query example <a href="/getGenericEvent?town=Madrid">/getGenericEvent?town=Madrid</a> </li>
+                    <li>Fetch all Tubingen events <a href="/tubingenEventSearch">/tubingenEventSearch</a> </li>
+                </ul>
+                <h3>Other</h3>
+                <ul>
+                    <li><a href="/kbfeed" >KBfeed</a>  static json. From the first version of Relation Extraction. </li>
+                    <li><a href="/webapquery" >WebAPQuery</a> static json.  </li>
+                </ul>
+           </div>
+        </div>
+
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>WebKIndex developed @ <a href="http://www.iti.gr">ITI</a> / <a href="http://www.certh.gr">CERTH </a></p>
+        <p> Contact: <a href="mailto:spyridons@iti.gr">spyridons@iti.gr</a></p>
+    </div>
+</footer>
+
+
+
+</body>
+</html>

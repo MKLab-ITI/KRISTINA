@@ -1,0 +1,88 @@
+/*
+    CSS file for demo page
+*/
+
+.demo-row{
+    height: 300px;
+    display:block;
+}
+
+.demo-row-column{
+    max-height: 280px;
+    overflow: hidden;
+    word-wrap: break-word;
+    padding-right:0px;
+}
+
+#extracted-urls{
+    display:none;
+}
+
+#crawled-url-list{
+    max-height:200px;
+    overflow:auto;
+}
+
+#right-arrow-urls{
+    margin-top: 30px;
+}
+
+#second-row{
+    border-top: 1px solid black;
+    display:none;
+    height:600px;
+}
+
+#down-arrow-extract-content{
+    margin-bottom:15px;
+}
+
+#extracted-text {
+    color:black;
+    height:450px;
+    overflow:auto;
+    padding:24px;
+    word-wrap: break-word;
+    padding-right:0px;
+}
+
+#content-frame{
+}
+
+#gears-gif{
+    margin-top:30px;
+    padding-top: inherit;
+}
+
+#third-row{
+    display:none;
+    height:300px;
+    overflow:hidden;
+    border-top: 1px solid black;
+}
+
+#extracted-concepts, #extracted-ne{
+    color:black;
+    height:200px;
+}
+
+.table-parent{
+    height:230px;
+    overflow:auto;
+    padding:0px;
+}
+
+.concept-span{
+    background-color:yellow;
+    border-radius: 5px;
+}
+
+.ne-span{
+    background-color:SpringGreen ;
+    border-radius: 5px;
+}
+
+#forth-row{
+    display:none;
+    margin-top:20px;
+}

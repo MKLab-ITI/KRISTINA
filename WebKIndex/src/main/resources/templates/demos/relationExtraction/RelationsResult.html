@@ -1,0 +1,131 @@
+
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+        <title>Relation Extraction Results</title>
+
+        <!-- Bootstrap core CSS --><!--
+        <link href="resources/templates/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />-->
+
+        <!-- CSS -->
+        <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <!--<link href="css/cover.css" rel="stylesheet" />-->
+        <link href="css/starter-template.css" rel="stylesheet"/>
+        <link href="dataTables/css/jquery.dataTables.min.css" rel="stylesheet"/>
+
+        <!-- Javascript -->
+        <script src="js/jquery-1.11.3.min.js"></script>
+        <script src="bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="dataTables/js/jquery.dataTables.min.js"></script>
+        <script src="js/sparql_RE.js"></script>
+    </head>
+
+    <body data-pinterest-extension-installed="cr1.39.1">
+
+    <nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: #0070BB">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-left">
+                    <li><a href="http://kristina-project.eu/en/" style="margin: 0; padding: 0" class="navbar-brand2"><img src="images/kristina_logo.png" /></a></li>
+                    <li><a class="navbar-brand2" style="line-height: 70px;" href="/relationExtractionDemo">Relation Extraction Demo</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="http://mklab.iti.gr/" style="margin: 0; padding: 0;" class="navbar-brand2"><img src="images/ITI logo_01_low.jpg" style="height:90%;margin-top: 5px;"/></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Relation Extraction developed @ <a href="http://www.iti.gr">ITI</a> / <a href="http://www.certh.gr">CERTH </a></p>
+            <p> Contact: <a href="mailto:spyridons@iti.gr">spyridons@iti.gr</a></p>
+        </div>
+    </footer>
+
+    <div style="height:50px;"></div>
+
+    <div class="container">
+
+        <h2>Relation extraction </h2>
+        <p>query: <span th:text="${result.getSentence()}"></span> </p>
+        <hr/><br/>
+
+        <!-- CONCEPTS -->
+        <h3>Metamap Concepts</h3>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Concept Type</th>
+                <th>Concepts</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="entry : ${result.getConcepts()}" th:inline="text">
+                <td th:text="${entry.key}"></td>
+                <td><span th:each="concept, iterStat : ${entry.value}" th:text="!${iterStat.last} ? ${concept} + ', ': ${concept}"></span></td>
+            </tr>
+
+            </tbody>
+        </table>
+        <br/><br/>
+        <!-- End of CONCEPTS -->
+
+        <!-- RELATIONS -->
+        <h3>Relations</h3>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Concept 1</th>
+                <th>Concept 2</th>
+                <th>Relation Type</th>
+                <th>Pattern based score</th>
+                <th>Machine learning score</th>
+                <th>Final score</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="relation : ${result.getRelations()}" th:inline="text">
+                <td th:text="${relation.getC1()}"></td>
+                <td th:text="${relation.getC2()}"></td>
+                <td th:text="${relation.getRelationType()}"></td>
+                <td th:text="${relation.getRbScore()}"></td>
+                <td th:text="${relation.getMlScore()}"></td>
+                <td th:text="${relation.getRelationScore()}"></td>
+            </tr>
+
+            </tbody>
+        </table>
+
+
+        <div class="container">
+            <h2>Demo queries to Relation Extraction KB</h2>
+            <a class="btn btn-primary" id="btn1">Treatment for fever</a>
+            <a class="btn btn-primary" id="btn2">Causes of backpain (1)</a>
+            <a class="btn btn-primary" id="btn3">Causes of backpain (2)</a>
+            <br/>
+            <br/>
+
+            <textarea id="queryText" class="form-control" rows="10"></textarea>
+
+            <br/>
+            <a class="btn btn-primary" id="run">Run</a>
+            <a class="btn btn-danger" id="clear">clear</a>
+
+            <h4>Results</h4>
+            <textarea id="queryResult" class="form-control" rows="10"></textarea>
+
+        </div>
+        
+    </div>
+
+    </body>
+</html>

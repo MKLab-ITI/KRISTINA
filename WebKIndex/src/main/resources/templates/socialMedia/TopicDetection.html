@@ -1,0 +1,62 @@
+
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+    <title>WebKIndex Topic Detection</title>
+
+    <!-- Bootstrap core CSS --><!--
+        <link href="resources/templates/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />-->
+
+    <!-- CSS -->
+    <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!--<link href="css/cover.css" rel="stylesheet" />-->
+    <link href="css/starter-template.css" rel="stylesheet"/>
+    <link href="dataTables/css/jquery.dataTables.min.css" rel="stylesheet"/>
+
+    <!-- Javascript -->
+    <script src="js/jquery-1.11.3.min.js"></script>
+    <script src="bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="dataTables/js/jquery.dataTables.min.js"></script>
+    <!--<script src="js/passageTable.js"></script>-->
+</head>
+
+<body data-pinterest-extension-installed="cr1.39.1">
+
+<footer class="footer">
+    <div class="container">
+        <p>WebKIndex developed @ <a href="http://www.iti.gr">ITI</a> / <a href="http://www.certh.gr">CERTH </a></p>
+        <p> Contact: <a href="mailto:spyridons@iti.gr">spyridons@iti.gr</a></p>
+    </div>
+</footer>
+
+<div class="container">
+
+    <h2>Topic Detection service response</h2>
+    <hr/><br/>
+
+    <h3>Topics based on <span th:text="${numTweets}"></span> tweets:</h3>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Topic ID</th>
+            <th>Labels</th>
+            <th>Top ranked tweets</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${response}" th:inline="text">
+            <td th:text="${item.getId()}"></td>
+            <td th:text="${item.getKeywords()}"></td>
+            <td>
+                <div th:each="id, iterStat: ${item.getTopPostsHTML()}" th:utext="${id}">
+                </div>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

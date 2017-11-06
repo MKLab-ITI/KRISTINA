@@ -1,0 +1,237 @@
+
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+        <title>WebKIndex Passage Table</title>
+
+        <!-- Bootstrap core CSS --><!--
+        <link href="resources/templates/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />-->
+
+        <!-- CSS -->
+        <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <!--<link href="css/cover.css" rel="stylesheet" />-->
+        <link href="css/starter-template.css" rel="stylesheet"/>
+        <link href="dataTables/css/jquery.dataTables.min.css" rel="stylesheet"/>
+
+        <!-- Javascript -->
+        <script src="js/jquery-1.11.3.min.js"></script>
+        <script src="bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="dataTables/js/jquery.dataTables.min.js"></script>
+        <script src="js/passageTable.js"></script>
+    </head>
+
+    <body data-pinterest-extension-installed="cr1.39.1">
+
+    <nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: #0070BB">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-left">
+                    <li><a href="http://kristina-project.eu/en/" style="margin: 0; padding: 0" class="navbar-brand2"><img src="images/kristina_logo.png" /></a></li>
+                    <li><a class="navbar-brand2" style="line-height: 70px;pointer-events:none" >KRISTINA IR</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="http://mklab.iti.gr/" style="margin: 0; padding: 0" class="navbar-brand2"><img src="images/ITI logo_01_low.jpg" style="height:90%;margin-top: 5px;"/></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div style="height:50px;"></div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>WebKIndex developed @ <a href="http://www.iti.gr">ITI</a> / <a href="http://www.certh.gr">CERTH </a></p>
+            <p> Contact: <a href="mailto:spyridons@iti.gr">spyridons@iti.gr</a></p>
+        </div>
+    </footer>
+
+    <div class="container">
+
+        <h2>Passages </h2>
+        <p>query:<span th:text="${query}"></span> </p>
+        <hr/><br/>
+
+        <button onclick="goBack()">Go Back</button>
+
+        <!-- ALL SEGMENTATION -->
+        <h3>All Segmentation</h3>
+        <table class="table table-bordered" id="all-segmentation-table">
+            <thead>
+            <tr>
+                <th>Document ID</th>
+                <th>Segment ID</th>
+                <th>Passage</th>
+                <th>LMDirichlet Score</th>
+                <th>LMJelinekMercer Score</th>
+                <th>Normalized Sum (LMD + LMJM)</th>
+                <th>Matched terms</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${passages.get('AllSegmentation')}" th:inline="text">
+                <td th:text="${item.getDocID()}"></td>
+                <td th:text="${item.getSegmentationID()}"></td>
+                <td th:text="${item.getTextResponse()}"></td>
+                <td th:text="${item.getLMDScore()}" th:title="${item.getExplanationLMD()}"></td>
+                <td th:text="${item.getLMJMScore()}" th:title="${item.getExplanationLMJM()}"></td>
+                <td th:text="${item.getNormalizedSum()}"></td>
+                <td th:text="${item.getMatchingTermsString()}"></td>
+            </tr>
+
+            </tbody>
+        </table>
+        <br/><br/>
+        <!-- End of ALL SEGMENTATION -->
+
+
+        <!-- THREE SENTENCES -->
+        <h3>Three Sentences:</h3>
+        <table class="table table-bordered" id="three-sentences-table">
+            <thead>
+            <tr>
+                <th>Document ID</th>
+                <th>Passage</th>
+                <th>LMDirichlet Score</th>
+                <th>LMJelinekMercer Score</th>
+                <th>Matched terms</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${passages.get('ThreeSentences')}" th:inline="text">
+                <td th:text="${item.getDocID()}"></td>
+                <td th:text="${item.getTextResponse()}"></td>
+                <td th:text="${item.getLMDScore()}" th:title="${item.getExplanationLMD()}"></td>
+                <td th:text="${item.getLMJMScore()}" th:title="${item.getExplanationLMJM()}"></td>
+                <td th:text="${item.getMatchingTermsString()}"></td>
+            </tr>
+
+            </tbody>
+        </table>
+        <br/><br/>
+        <!-- End of THREE SENTENCES -->
+
+
+        <!-- TWO SENTENCES -->
+        <h3>Two Sentences</h3>
+        <table class="table table-bordered"  id="two-sentences-table">
+            <thead>
+            <tr>
+                <th>Document ID</th>
+                <th>Passage</th>
+                <th>LMDirichlet Score</th>
+                <th>LMJelinekMercer Score</th>
+                <th>Matched terms</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${passages.get('TwoSentences')}" th:inline="text">
+                <td th:text="${item.getDocID()}"></td>
+                <td th:text="${item.getTextResponse()}"></td>
+                <td th:text="${item.getLMDScore()}" th:title="${item.getExplanationLMD()}"></td>
+                <td th:text="${item.getLMJMScore()}" th:title="${item.getExplanationLMJM()}"></td>
+                <td th:text="${item.getMatchingTermsString()}"></td>
+            </tr>
+
+            </tbody>
+        </table>
+        <br/><br/>
+        <!-- End of TWO SENTENCES -->
+
+
+        <!-- ONE SENTENCE -->
+        <h3>One Sentence</h3>
+        <table class="table table-bordered" id="one-sentence-table">
+            <thead>
+            <tr>
+                <th>Document ID</th>
+                <th>Passage</th>
+                <th>LMDirichlet Score</th>
+                <th>LMJelinekMercer Score</th>
+                <th>Matched terms</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${passages.get('OneSentence')}" th:inline="text">
+                <td th:text="${item.getDocID()}"></td>
+                <td th:text="${item.getTextResponse()}"></td>
+                <td th:text="${item.getLMDScore()}" th:title="${item.getExplanationLMD()}"></td>
+                <td th:text="${item.getLMJMScore()}" th:title="${item.getExplanationLMJM()}"></td>
+                <td th:text="${item.getMatchingTermsString()}"></td>
+            </tr>
+
+            </tbody>
+        </table>
+        <br/><br/>
+        <!-- End of ONE SENTENCE -->
+
+        <!-- PARAGRAPH -->
+        <h3>Paragraph:</h3>
+        <table class="table table-bordered" id="paragraph-table">
+            <thead>
+            <tr>
+                <th>Document ID</th>
+                <th>Passage</th>
+                <th>LMDirichlet Score</th>
+                <th>LMJelinekMercer Score</th>
+                <th>Matched terms</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${passages.get('Paragraph')}" th:inline="text">
+                <td th:text="${item.getDocID()}"></td>
+                <td th:text="${item.getTextResponse()}"></td>
+                <td th:text="${item.getLMDScore()}" th:title="${item.getExplanationLMD()}"></td>
+                <td th:text="${item.getLMJMScore()}" th:title="${item.getExplanationLMJM()}"></td>
+                <td th:text="${item.getMatchingTermsString()}"></td>
+            </tr>
+
+            </tbody>
+        </table>
+        <br/><br/>
+        <!-- End of PARAGRAPH -->
+
+        <!-- DOCUMENT-->
+        <h3>Document:</h3>
+        <table class="table table-bordered" id="document-table">
+            <thead>
+            <tr>
+                <th>Document ID</th>
+                <th>Passage</th>
+                <th>LMDirichlet Score</th>
+                <th>LMJelinekMercer Score</th>
+                <th>Matched terms</th>
+                <!--<th>URL</th>-->
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${passages.get('Document')}" th:inline="text">
+                <td th:text="${item.getDocID()}"></td>
+                <td th:text="${item.getTextResponse()}"></td>
+                <td th:text="${item.getLMDScore()}" th:title="${item.getExplanationLMD()}"></td>
+                <td th:text="${item.getLMJMScore()}" th:title="${item.getExplanationLMJM()}"></td>
+                <td th:text="${item.getMatchingTermsString()}"></td>
+                <!--<td th:text="${item.getUrl()}"></td>-->
+            </tr>
+
+            </tbody>
+        </table>
+        <br/><br/>
+        <!-- End of DOCUMENT -->
+    </div>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+
+    </body>
+</html>

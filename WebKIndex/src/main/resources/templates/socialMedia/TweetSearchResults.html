@@ -1,0 +1,46 @@
+
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+    <title>WebKIndex Tweet Search</title>
+
+    <!-- Bootstrap core CSS --><!--
+        <link href="resources/templates/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />-->
+
+    <!-- CSS -->
+    <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!--<link href="css/cover.css" rel="stylesheet" />-->
+    <link href="css/starter-template.css" rel="stylesheet"/>
+    <link href="dataTables/css/jquery.dataTables.min.css" rel="stylesheet"/>
+
+    <!-- Javascript -->
+    <script src="js/jquery-1.11.3.min.js"></script>
+    <script src="bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="dataTables/js/jquery.dataTables.min.js"></script>
+    <!--<script src="js/passageTable.js"></script>-->
+</head>
+
+<body data-pinterest-extension-installed="cr1.39.1">
+
+<footer class="footer">
+    <div class="container">
+        <p>WebKIndex developed @ <a href="http://www.iti.gr">ITI</a> / <a href="http://www.certh.gr">CERTH </a></p>
+        <p> Contact: <a href="mailto:spyridons@iti.gr">spyridons@iti.gr</a></p>
+    </div>
+</footer>
+
+<div class="container">
+
+    <h2>Tweet Search Results</h2>
+    <hr/><br/>
+
+    <h3>Showing <span th:text="${numTweets}"></span> tweets matching input: <span th:text="${keyword}"></span>:</h3>
+
+    <div th:each="id, iterStat: ${response}" th:utext="${id}">
+    </div>
+
+</div>
+
+</body>
+</html>

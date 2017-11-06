@@ -4,7 +4,7 @@
 
   <groupId>gr.iti.mklab</groupId>
   <artifactId>KIndex</artifactId>
-  <version>0.2.20</version>
+  <version>1.0.0</version>
   <packaging>jar</packaging>
 
   <name>KIndex</name>

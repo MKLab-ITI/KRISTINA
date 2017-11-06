@@ -1,0 +1,255 @@
+
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+        <title>WebKIndex WebAP Passage Table</title>
+
+        <!-- Bootstrap core CSS --><!--
+        <link href="resources/templates/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />-->
+
+        <!-- CSS -->
+        <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <!--<link href="css/cover.css" rel="stylesheet" />-->
+        <link href="css/starter-template.css" rel="stylesheet"/>
+        <link href="dataTables/css/jquery.dataTables.min.css" rel="stylesheet"/>
+        <link href="select2-4.0.3/dist/css/select2.min.css" rel="stylesheet"/>
+
+        <!-- Javascript -->
+        <script src="js/jquery-1.11.3.min.js"></script>
+        <script src="bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="dataTables/js/jquery.dataTables.min.js"></script>
+        <script src="select2-4.0.3/dist/js/select2.min.js"></script>
+        <script src="js/webApPassageTable.js"></script>
+    </head>
+
+    <body data-pinterest-extension-installed="cr1.39.1">
+
+    <footer class="footer">
+        <div class="container" >
+            <p>WebKIndex developed @ <a href="http://www.iti.gr">ITI</a> / <a href="http://www.certh.gr">CERTH </a></p>
+            <p> Contact: <a href="mailto:thtsompa@iti.gr">thtsompa@iti.gr</a></p>
+        </div>
+    </footer>
+
+    <div class="container" style="width:95%">
+
+
+        <div class="row col-xs-12">
+            <h1>WebAP Dataset</h1>
+        </div>
+        <div class="row col-xs-12">
+            <h3>Notes</h3>
+            <p>For non-OneSentence Passages, the SentenceID is the ID of the last sentence of the passage.</p>
+            <p>For non-OneSentence Passages, the relevance is the relevance of the last sentence of the passage.</p>
+        </div>
+
+        <div class="row col-xs-12 text-center">
+            <h3>Query</h3>
+            <select id="query-selection" style="width: 50%"> >
+            </select>
+        </div>
+        <br/><br/>
+        <h3>Combined Table</h3>
+        <p>Results from 3 different indexes Combined in one table.</p>
+        <p>Indexes: OneSentence, TwoSentences, ThreeSentences.</p>
+        <table class="table table-bordered" id="combined-table">
+            <thead>
+            <tr>
+                <th>Passage Type</th>
+                <th>DocumentID: SentenceID</th>
+                <th>Relevance</th>
+                <th style="width:50%">Passage</th>
+                <th>VSM Score</th>
+                <th>LMDirichlet Score</th>
+                <th>LMJelinekMercer Score</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!--<tr th:each="item : ${passages.get('CombinedTable')}" th:inline="text">
+                <td th:text="${item.getType()}"></td>
+                <td th:text="${item.getDocID()}: ${item.getSenID()}"></td>
+                <td th:text="${item.getRelevance()}"></td>
+                <td th:text="${item.getText()}"></td>
+                <td th:text="${item.getVsmScore()}"></td>
+                <td th:text="${item.getLMDScore()}"></td>
+                <td th:text="${item.getLMJMScore()}"></td>
+            </tr>-->
+
+            </tbody>
+        </table>
+        <br/>
+        <h3>All Segments Table</h3>
+        <p>Display results from one index containing all type of segmentation.</p>
+        <p>All passages indexed in the indexes were also indexed in one (AllSegmentation) Index! </p>
+        <table class="table table-bordered" id="all-segments-table">
+            <thead>
+            <tr>
+                <th>Passage Type</th>
+                <th>DocumentID: SentenceID</th>
+                <th>Relevance</th>
+                <th style="width:50%">Passage</th>
+                <th>VSM Score</th>
+                <th>LMDirichlet Score</th>
+                <th>LMJelinekMercer Score</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!--<tr th:each="item : ${passages.get('CombinedTable')}" th:inline="text">
+                <td th:text="${item.getType()}"></td>
+                <td th:text="${item.getDocID()}: ${item.getSenID()}"></td>
+                <td th:text="${item.getRelevance()}"></td>
+                <td th:text="${item.getText()}"></td>
+                <td th:text="${item.getVsmScore()}"></td>
+                <td th:text="${item.getLMDScore()}"></td>
+                <td th:text="${item.getLMJMScore()}"></td>
+            </tr>-->
+
+            </tbody>
+        </table>
+        <br/><br/>
+
+
+
+
+<!--
+        <h2>Passages </h2>
+        <p>query:<span th:text="${query}"></span> </p>
+        <hr/><br/>
+
+        &lt;!&ndash; ONE SENTENCE &ndash;&gt;
+        <h3>One Sentence</h3>
+        <table class="table table-bordered" id="one-sentence-table">
+            <thead>
+            <tr>
+                <th>Document ID</th>
+                <th>Passage</th>
+                <th>VSM Score</th>
+                <th>LMDirichlet Score</th>
+                <th>LMJelinekMercer Score</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${passages.get('OneSentence')}" th:inline="text">
+                <td th:text="${item.getDocID()}"></td>
+                <td th:text="${item.getText()}"></td>
+                <td th:text="${item.getVsmScore()}"></td>
+                <td th:text="${item.getLMDScore()}"></td>
+                <td th:text="${item.getLMJMScore()}"></td>
+            </tr>
+
+            </tbody>
+        </table>
+        <br/><br/>
+        &lt;!&ndash; End of ONE SENTENCE &ndash;&gt;
+
+
+        &lt;!&ndash; TWO SENTENCES &ndash;&gt;
+        <h3>Two Sentences</h3>
+        <table class="table table-bordered"  id="two-sentences-table">
+            <thead>
+            <tr>
+                <th>Document ID</th>
+                <th>Passage</th>
+                <th>VSM Score</th>
+                <th>LMDirichlet Score</th>
+                <th>LMJelinekMercer Score</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${passages.get('TwoSentences')}" th:inline="text">
+                <td th:text="${item.getDocID()}"></td>
+                <td th:text="${item.getText()}"></td>
+                <td th:text="${item.getVsmScore()}"></td>
+                <td th:text="${item.getLMDScore()}"></td>
+                <td th:text="${item.getLMJMScore()}"></td>
+            </tr>
+
+            </tbody>
+        </table>
+        <br/><br/>
+        &lt;!&ndash; End of TWO SENTENCES &ndash;&gt;
+
+
+        &lt;!&ndash; THREE SENTENCES &ndash;&gt;
+        <h3>Three Sentences:</h3>
+        <table class="table table-bordered" id="three-sentences-table">
+            <thead>
+            <tr>
+                <th>Document ID</th>
+                <th>Passage</th>
+                <th>VSM Score</th>
+                <th>LMDirichlet Score</th>
+                <th>LMJelinekMercer Score</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${passages.get('ThreeSentences')}" th:inline="text">
+                <td th:text="${item.getDocID()}"></td>
+                <td th:text="${item.getText()}"></td>
+                <td th:text="${item.getVsmScore()}"></td>
+                <td th:text="${item.getLMDScore()}"></td>
+                <td th:text="${item.getLMJMScore()}"></td>
+            </tr>
+
+            </tbody>
+        </table>
+        <br/><br/>
+        &lt;!&ndash; End of THREE SENTENCES &ndash;&gt;
+
+        &lt;!&ndash; PARAGRAPH &ndash;&gt;
+        <h3>Paragraph:</h3>
+        <table class="table table-bordered" id="paragraph-table">
+            <thead>
+            <tr>
+                <th>Document ID</th>
+                <th>Passage</th>
+                <th>VSM Score</th>
+                <th>LMDirichlet Score</th>
+                <th>LMJelinekMercer Score</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${passages.get('Paragraph')}" th:inline="text">
+                <td th:text="${item.getDocID()}"></td>
+                <td th:text="${item.getText()}"></td>
+                <td th:text="${item.getVsmScore()}"></td>
+                <td th:text="${item.getLMDScore()}"></td>
+                <td th:text="${item.getLMJMScore()}"></td>
+            </tr>
+
+            </tbody>
+        </table>
+        <br/><br/>
+        &lt;!&ndash; End of PARAGRAPH &ndash;&gt;
+
+
+        &lt;!&ndash; DOCUMENT&ndash;&gt;
+        <h3>Document:</h3>
+        <table class="table table-bordered" id="document-table">
+            <thead>
+            <tr>
+                <th>Document ID</th>
+                <th>Passage</th>
+                <th>VSM Score</th>
+                <th>LMDirichlet Score</th>
+                <th>LMJelinekMercer Score</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${passages.get('Document')}" th:inline="text">
+                <td th:text="${item.getDocID()}"></td>
+                <td th:text="${item.getText()}"></td>
+                <td th:text="${item.getVsmScore()}"></td>
+                <td th:text="${item.getLMDScore()}"></td>
+                <td th:text="${item.getLMJMScore()}"></td>
+            </tr>
+
+            </tbody>
+        </table>
+        <br/><br/>-->
+        <!-- End of DOCUMENT -->
+    </div>
+
+    </body>
+</html>
